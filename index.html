@@ -1,0 +1,2241 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RIKY STORE — Premium Digital Store</title>
+<meta name="description" content="RIKY STORE — Toko digital terpercaya untuk kebutuhan premium Anda. Bot WhatsApp Grup Biasa, Grup Premium, dan User Premium.">
+<meta name="theme-color" content="#04060d">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blue:#2f8bff;
+  --blue-l:#6bb6ff;
+  --blue-d:#0a54c4;
+  --gold:#ffc93c;
+  --danger:#ff5470;
+  --font:'Plus Jakarta Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
+  --maxw:1160px;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --r-sm:12px; --r:16px; --r-lg:22px;
+}
+html[data-theme="dark"]{
+  --bg:#04060d; --bg-2:#080d18; --bg-3:#0c1220;
+  --glass:rgba(255,255,255,.045); --glass-2:rgba(255,255,255,.085);
+  --line:rgba(120,160,255,.16); --text:#e9f1ff; --dim:#93a3c0;
+  --shadow:0 22px 55px rgba(0,0,0,.55); --hdr:rgba(5,8,16,.74);
+  --img-bg:rgba(255,255,255,.035); --track-bg:rgba(255,255,255,.07);
+}
+html[data-theme="light"]{
+  --bg:#eef2fa; --bg-2:#ffffff; --bg-3:#f6f9ff;
+  --glass:rgba(255,255,255,.72); --glass-2:rgba(255,255,255,.95);
+  --line:rgba(30,70,150,.14); --text:#0a1424; --dim:#5b6b85;
+  --shadow:0 22px 50px rgba(25,50,110,.14); --hdr:rgba(255,255,255,.8);
+  --img-bg:rgba(10,30,70,.05); --track-bg:rgba(30,70,150,.12);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;padding:0;font-family:var(--font);background:var(--bg);color:var(--text);
+  line-height:1.5;overflow-x:hidden;-webkit-font-smoothing:antialiased;
+  transition:background .4s ease,color .4s ease;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(780px 540px at 84% -10%, rgba(47,139,255,.20), transparent 65%),
+    radial-gradient(700px 540px at -12% 28%, rgba(47,139,255,.13), transparent 70%),
+    radial-gradient(760px 520px at 50% 110%, rgba(47,139,255,.10), transparent 70%);
+}
+img{max-width:100%;display:block}
+button{font-family:inherit}
+a{color:inherit}
+::selection{background:rgba(47,139,255,.35);color:#fff}
+.container{width:min(100% - 30px, var(--maxw));margin-inline:auto}
+main,header,footer{position:relative;z-index:1}
+::-webkit-scrollbar{width:9px;height:9px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(47,139,255,.35);border-radius:99px}
+::-webkit-scrollbar-thumb:hover{background:rgba(47,139,255,.6)}
+
+#preloader{
+  position:fixed;inset:0;z-index:500;display:grid;place-items:center;
+  background:var(--bg);transition:opacity .55s ease,visibility .55s ease;
+}
+#preloader.hide{opacity:0;visibility:hidden}
+.loader-ring{
+  width:48px;height:48px;border-radius:50%;
+  border:3px solid rgba(47,139,255,.18);border-top-color:var(--blue);
+  animation:spin .85s linear infinite;box-shadow:0 0 30px rgba(47,139,255,.45);
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* HEADER */
+.site-header{
+  position:sticky;top:0;z-index:60;background:var(--hdr);
+  backdrop-filter:blur(20px) saturate(150%);-webkit-backdrop-filter:blur(20px) saturate(150%);
+  border-bottom:1px solid var(--line);transition:background .4s ease;
+}
+.header-inner{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:11px 0}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;order:1}
+.brand-logo{
+  width:40px;height:40px;border-radius:13px;display:grid;place-items:center;flex:none;
+  background:linear-gradient(145deg,var(--blue),var(--blue-d));
+  box-shadow:0 0 24px rgba(47,139,255,.55), inset 0 1px 0 rgba(255,255,255,.35);
+  color:#fff;font-weight:800;font-size:17px;letter-spacing:-.02em;
+}
+.brand-name{font-weight:800;letter-spacing:.08em;font-size:14px;white-space:nowrap}
+.brand-name b{color:var(--blue-l);font-weight:800}
+
+.header-actions{order:2;margin-left:auto;display:flex;align-items:center;gap:8px}
+.icon-btn{
+  width:42px;height:42px;border-radius:14px;display:grid;place-items:center;
+  background:var(--glass);border:1px solid var(--line);color:var(--text);
+  cursor:pointer;position:relative;transition:all .25s var(--ease);
+  -webkit-tap-highlight-color:transparent;
+}
+.icon-btn:hover,.icon-btn:focus-visible{
+  background:var(--glass-2);border-color:rgba(47,139,255,.55);
+  box-shadow:0 0 22px rgba(47,139,255,.32);transform:translateY(-1px);outline:none;
+}
+.icon-btn:active{transform:scale(.95)}
+.icon-btn svg{width:20px;height:20px}
+
+#burgerBtn{
+  order:99;
+  background:linear-gradient(145deg, rgba(47,139,255,.18), rgba(47,139,255,.06));
+  border-color:rgba(47,139,255,.4);
+  box-shadow:0 0 18px rgba(47,139,255,.22);
+  margin-left:4px;
+}
+#burgerBtn:hover{
+  background:linear-gradient(145deg, rgba(47,139,255,.3), rgba(47,139,255,.12));
+  box-shadow:0 0 26px rgba(47,139,255,.5);
+}
+
+.search-wrap{order:3;flex:1 1 100%;position:relative;display:flex;align-items:center}
+.search-wrap>svg{
+  position:absolute;left:14px;width:18px;height:18px;color:var(--dim);pointer-events:none;
+}
+#searchInput{
+  width:100%;padding:12px 42px 12px 42px;border-radius:14px;
+  border:1px solid var(--line);background:var(--glass);color:var(--text);
+  font-family:inherit;font-size:14px;outline:none;transition:all .25s var(--ease);
+}
+#searchInput::placeholder{color:var(--dim)}
+#searchInput:focus{
+  border-color:var(--blue);background:var(--glass-2);
+  box-shadow:0 0 0 3px rgba(47,139,255,.16), 0 0 24px rgba(47,139,255,.18);
+}
+#searchClear{
+  position:absolute;right:8px;width:28px;height:28px;border-radius:9px;
+  border:0;background:transparent;color:var(--dim);cursor:pointer;
+  display:none;place-items:center;font-size:16px;line-height:1;transition:.2s;
+}
+#searchClear.show{display:grid}
+#searchClear:hover{background:var(--glass-2);color:var(--text)}
+
+.theme-wrap{position:relative}
+.dropdown{
+  position:absolute;top:calc(100% + 10px);right:0;min-width:196px;
+  background:var(--glass-2);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);
+  border:1px solid var(--line);border-radius:16px;padding:6px;
+  box-shadow:var(--shadow);z-index:80;opacity:0;visibility:hidden;transform:translateY(-8px);
+  transition:all .28s var(--ease);
+}
+.dropdown.open{opacity:1;visibility:visible;transform:translateY(0)}
+.dropdown button{
+  width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;
+  border-radius:10px;background:none;border:0;color:var(--text);
+  font-size:13.5px;font-weight:500;cursor:pointer;text-align:left;transition:.2s;
+}
+.dropdown button:hover{background:rgba(47,139,255,.14)}
+.dropdown button.active{background:rgba(47,139,255,.18);color:var(--blue-l);font-weight:700}
+.dropdown button svg{width:17px;height:17px;flex:none}
+
+.cart-badge{
+  position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;padding:0 5px;
+  border-radius:99px;background:var(--blue);color:#fff;font-size:11px;font-weight:800;
+  display:grid;place-items:center;box-shadow:0 0 14px rgba(47,139,255,.85);
+  transform:scale(0);transition:transform .3s var(--ease);
+}
+.cart-badge.show{transform:scale(1)}
+
+@media(min-width:880px){
+  .search-wrap{order:2;flex:1 1 auto;max-width:460px;margin:0 auto}
+  .header-actions{order:3;margin-left:0}
+  .brand-name{font-size:15.5px}
+}
+
+/* HERO */
+.hero{padding:28px 0 20px;text-align:center}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:5px 12px;border-radius:99px;
+  background:rgba(47,139,255,.12);border:1px solid rgba(47,139,255,.35);
+  font-size:10.5px;font-weight:700;color:var(--blue-l);
+  letter-spacing:.14em;text-transform:uppercase;margin-bottom:14px;
+}
+.hero-badge svg{width:12px;height:12px}
+
+.hero-visual{
+  position:relative;max-width:640px;margin:0 auto;
+  border-radius:22px;overflow:hidden;
+  border:1px solid var(--line);background:var(--glass);
+  box-shadow:var(--shadow), 0 0 55px rgba(47,139,255,.16);
+}
+.hero-bg{
+  position:absolute;inset:0;background-size:cover;background-position:center;
+  filter:blur(38px) saturate(140%);opacity:.5;transform:scale(1.2);
+}
+.hero-visual::after{
+  content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,rgba(4,8,18,.12),rgba(4,8,18,.62));
+}
+html[data-theme="light"] .hero-visual::after{
+  background:linear-gradient(180deg,rgba(255,255,255,.06),rgba(228,238,255,.6));
+}
+.hero-slider{
+  position:relative;z-index:2;overflow:hidden;touch-action:pan-y;cursor:grab;
+  height:340px;transition:height .45s var(--ease);
+}
+.hero-slider:active{cursor:grabbing}
+.hero-track{display:flex;height:100%;user-select:none;-webkit-user-select:none;will-change:transform}
+.hero-slide{flex:0 0 100%;height:100%;display:flex;align-items:center;justify-content:center;padding:14px}
+.hero-slide img{
+  max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;
+  border-radius:14px;
+  box-shadow:0 16px 40px rgba(0,0,0,.45), 0 0 40px rgba(47,139,255,.35);
+  pointer-events:none;
+}
+.hero-dots{position:relative;z-index:3;display:flex;justify-content:center;gap:7px;padding:12px 0 14px}
+.hero-dots button{
+  width:8px;height:8px;border-radius:99px;border:0;padding:0;cursor:pointer;
+  background:var(--dim);opacity:.45;transition:all .32s var(--ease);
+}
+.hero-dots button.active{width:26px;opacity:1;background:var(--blue);box-shadow:0 0 14px rgba(47,139,255,.9)}
+
+.hero-title{
+  margin:22px 0 9px;font-size:clamp(23px,6.4vw,42px);font-weight:800;
+  letter-spacing:.05em;line-height:1.12;
+  background:linear-gradient(110deg,var(--text) 8%,var(--blue-l) 48%,var(--text) 92%);
+  background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 22px rgba(47,139,255,.35));
+  animation:shine 7s linear infinite;
+}
+@keyframes shine{to{background-position:220% center}}
+.hero-sub{margin:0 auto;max-width:520px;color:var(--dim);font-size:14px;padding:0 6px}
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:12px 20px;border-radius:14px;border:1px solid transparent;
+  font-weight:700;font-size:13.5px;cursor:pointer;text-decoration:none;
+  white-space:nowrap;transition:all .25s var(--ease);
+  -webkit-tap-highlight-color:transparent;
+}
+.btn svg{width:16px;height:16px}
+.btn-primary{
+  background:linear-gradient(135deg,var(--blue),var(--blue-d));color:#fff;
+  box-shadow:0 10px 28px rgba(47,139,255,.38);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 38px rgba(47,139,255,.55)}
+.btn-ghost{background:var(--glass);border-color:var(--line);color:var(--text)}
+.btn-ghost:hover{border-color:rgba(47,139,255,.55);box-shadow:0 0 22px rgba(47,139,255,.28);transform:translateY(-2px)}
+.btn:active{transform:scale(.975)}
+.btn-block{width:100%}
+
+.section{padding:44px 0}
+.section-head{text-align:center;margin-bottom:26px}
+.eyebrow{
+  display:inline-block;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--blue-l);background:rgba(47,139,255,.12);border:1px solid rgba(47,139,255,.3);
+  padding:6px 13px;border-radius:99px;margin-bottom:12px;font-weight:700;
+}
+.section-title{font-size:clamp(20px,4.6vw,30px);margin:0 0 8px;font-weight:800;letter-spacing:-.01em}
+.section-sub{color:var(--dim);font-size:13.5px;margin:0 auto;max-width:560px;padding:0 6px}
+
+.cat-tabs{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.cat-tab{
+  padding:9px 16px;border-radius:99px;border:1px solid var(--line);
+  background:var(--glass);color:var(--dim);font-weight:600;font-size:12.5px;
+  cursor:pointer;transition:all .25s var(--ease);
+}
+.cat-tab:hover{color:var(--text);border-color:rgba(47,139,255,.45)}
+.cat-tab.active{
+  color:#fff;background:linear-gradient(135deg,var(--blue),var(--blue-d));
+  border-color:transparent;box-shadow:0 0 22px rgba(47,139,255,.45);
+}
+.carousel{overflow:hidden;border-radius:var(--r-lg);touch-action:pan-y;cursor:grab}
+.carousel:active{cursor:grabbing}
+.cat-track{display:flex;align-items:flex-start;user-select:none;-webkit-user-select:none;will-change:transform}
+.cat-slide{flex:0 0 100%;min-width:0;padding:2px}
+.cat-caption{text-align:center;margin-bottom:14px;padding:0 8px}
+.cat-caption h3{font-size:14px;margin:0 0 4px;font-weight:800;letter-spacing:.05em;color:var(--blue-l)}
+.cat-caption p{margin:0;font-size:12px;color:var(--dim)}
+
+.product-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+@media(min-width:860px){.product-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}}
+
+.product-card{
+  background:var(--glass);border:1px solid var(--line);border-radius:var(--r);
+  overflow:hidden;display:flex;flex-direction:column;position:relative;
+  transition:all .3s var(--ease);
+}
+.product-card:hover{
+  transform:translateY(-4px);border-color:rgba(47,139,255,.5);
+  box-shadow:0 18px 40px rgba(0,0,0,.32), 0 0 30px rgba(47,139,255,.24);
+}
+.pc-img{position:relative;aspect-ratio:16/10;background:var(--img-bg);overflow:hidden}
+.pc-img img{width:100%;height:100%;object-fit:cover;transition:transform .55s var(--ease)}
+.product-card:hover .pc-img img{transform:scale(1.07)}
+.pc-tag{
+  position:absolute;top:7px;left:7px;font-size:9.5px;font-weight:800;letter-spacing:.07em;
+  padding:4px 9px;border-radius:99px;text-transform:uppercase;
+  background:rgba(4,10,22,.7);color:#8ec6ff;border:1px solid rgba(47,139,255,.5);
+  backdrop-filter:blur(6px);
+}
+.pc-body{padding:11px;display:flex;flex-direction:column;gap:5px;flex:1}
+.pc-name{font-size:13px;font-weight:700;margin:0;line-height:1.3}
+.pc-desc{font-size:11px;color:var(--dim);margin:0;line-height:1.45;flex:1}
+.pc-price{font-size:15px;font-weight:800;color:var(--blue-l);letter-spacing:-.01em}
+.pc-dur{font-size:10.5px;color:var(--dim)}
+.pc-dur b{color:var(--text)}
+.pc-actions{display:grid;grid-template-columns:1fr;gap:6px;margin-top:5px}
+.pc-actions .btn{padding:9px 8px;font-size:11px;border-radius:10px}
+
+.cat-dots{display:flex;justify-content:center;gap:7px;margin-top:18px}
+.cat-dots button{
+  width:8px;height:8px;border-radius:99px;border:0;padding:0;cursor:pointer;
+  background:var(--track-bg);transition:all .32s var(--ease);
+}
+.cat-dots button.active{width:26px;background:var(--blue);box-shadow:0 0 14px rgba(47,139,255,.85)}
+
+.search-results{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}
+@media(min-width:860px){.search-results{grid-template-columns:repeat(4,minmax(0,1fr));gap:15px}}
+.empty-state{
+  text-align:center;padding:44px 18px;border:1px dashed var(--line);
+  border-radius:var(--r-lg);color:var(--dim);font-size:13.5px;
+}
+.empty-state .big{font-size:34px;display:block;margin-bottom:8px;opacity:.7}
+
+.steps{display:grid;grid-template-columns:1fr;gap:14px;max-width:880px;margin:0 auto}
+@media(min-width:640px){.steps{grid-template-columns:repeat(3,1fr);gap:16px}}
+.step-card{
+  position:relative;background:var(--glass);border:1px solid var(--line);border-radius:18px;
+  padding:28px 20px 20px;text-align:center;transition:.3s var(--ease);
+}
+.step-card:hover{
+  border-color:rgba(47,139,255,.5);transform:translateY(-3px);
+  box-shadow:0 18px 38px rgba(0,0,0,.28), 0 0 30px rgba(47,139,255,.22);
+}
+.step-num{
+  position:absolute;top:-15px;left:50%;transform:translateX(-50%);
+  width:34px;height:34px;border-radius:50%;
+  display:grid;place-items:center;font-size:14px;font-weight:800;color:#fff;
+  background:linear-gradient(145deg,var(--blue),var(--blue-d));
+  box-shadow:0 0 22px rgba(47,139,255,.7);
+}
+.step-card h4{margin:8px 0 8px;font-size:14px;font-weight:800}
+.step-card p{margin:0;font-size:12px;color:var(--dim);line-height:1.65}
+
+.tst-wrap{overflow:hidden;touch-action:pan-y;cursor:grab}
+.tst-wrap:active{cursor:grabbing}
+.tst-track{display:flex;user-select:none;-webkit-user-select:none;will-change:transform}
+.tst-slide{flex:0 0 100%;padding:4px;display:flex;justify-content:center}
+.tst-card{
+  width:100%;max-width:620px;background:var(--glass);border:1px solid var(--line);
+  border-radius:20px;padding:22px 18px;text-align:center;
+  box-shadow:var(--shadow);transition:.3s var(--ease);
+}
+.tst-card:hover{border-color:rgba(47,139,255,.42);box-shadow:0 0 34px rgba(47,139,255,.18)}
+.tst-ava{
+  width:56px;height:56px;border-radius:50%;margin:0 auto 11px;display:grid;place-items:center;
+  font-weight:800;font-size:18px;color:#fff;
+  background:linear-gradient(145deg,var(--blue),var(--blue-d));
+  box-shadow:0 0 26px rgba(47,139,255,.5);
+}
+.tst-stars{color:var(--gold);font-size:14px;letter-spacing:2px;margin-bottom:10px;filter:drop-shadow(0 0 8px rgba(255,201,60,.5))}
+.tst-text{font-size:13px;color:var(--text);line-height:1.7;margin:0 0 14px;font-style:italic;opacity:.92}
+.tst-name{font-size:13px;font-weight:800}
+.tst-role{font-size:11px;color:var(--dim);margin-top:2px}
+.demo-note{text-align:center;font-size:11px;color:var(--dim);margin-top:16px;opacity:.8}
+
+.faq-list{max-width:760px;margin:0 auto}
+.faq-item{
+  border:1px solid var(--line);border-radius:14px;background:var(--glass);
+  margin-bottom:10px;overflow:hidden;transition:all .3s var(--ease);
+}
+.faq-item.open{border-color:rgba(47,139,255,.5);box-shadow:0 0 26px rgba(47,139,255,.16)}
+.faq-q{
+  width:100%;display:flex;justify-content:space-between;align-items:center;gap:14px;
+  padding:15px 16px;background:none;border:0;color:var(--text);
+  font-size:13px;font-weight:700;cursor:pointer;text-align:left;line-height:1.45;
+}
+.faq-icon{
+  width:22px;height:22px;flex:none;display:grid;place-items:center;
+  border-radius:7px;background:rgba(47,139,255,.14);color:var(--blue-l);
+  font-size:15px;font-weight:700;line-height:1;transition:transform .35s var(--ease);
+}
+.faq-item.open .faq-icon{transform:rotate(135deg);background:var(--blue);color:#fff}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .4s var(--ease)}
+.faq-a p{margin:0;padding:0 16px 16px;font-size:12.5px;color:var(--dim);line-height:1.75}
+
+.cta-box{
+  background:linear-gradient(135deg, rgba(47,139,255,.16), rgba(47,139,255,.04));
+  border:1px solid rgba(47,139,255,.35);
+  border-radius:24px;padding:34px 22px;text-align:center;
+  position:relative;overflow:hidden;box-shadow:0 0 60px rgba(47,139,255,.15);
+}
+.cta-box::before{
+  content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+  background:radial-gradient(circle, rgba(47,139,255,.12), transparent 60%);
+  pointer-events:none;
+}
+.cta-box h3{position:relative;font-size:clamp(19px,4.4vw,26px);margin:0 0 10px;font-weight:800}
+.cta-box p{position:relative;margin:0 auto 20px;color:var(--dim);font-size:13px;max-width:520px;line-height:1.65}
+.cta-actions{position:relative;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+.footer{
+  margin-top:34px;padding:38px 0 26px;border-top:1px solid var(--line);
+  background:linear-gradient(180deg,transparent,rgba(47,139,255,.07));
+}
+.footer-inner{text-align:center}
+.footer-brand{
+  font-size:18px;font-weight:800;letter-spacing:.14em;
+  background:linear-gradient(120deg,var(--text),var(--blue-l),var(--text));
+  background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;
+  animation:shine 7s linear infinite;
+}
+.footer-tag{font-size:12px;color:var(--dim);margin:7px 0 20px;letter-spacing:.05em}
+.footer-links{display:flex;flex-wrap:wrap;justify-content:center;gap:9px;margin-bottom:22px}
+.f-link{
+  display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border-radius:12px;
+  border:1px solid var(--line);background:var(--glass);text-decoration:none;
+  font-size:11.5px;font-weight:700;color:var(--text);transition:all .25s var(--ease);
+}
+.f-link:hover{border-color:rgba(47,139,255,.55);box-shadow:0 0 20px rgba(47,139,255,.28);transform:translateY(-2px)}
+.f-link svg{width:15px;height:15px}
+.copyright{font-size:11px;color:var(--dim);padding-top:16px;border-top:1px solid var(--line);margin:0}
+
+.overlay{
+  position:fixed;inset:0;z-index:90;background:rgba(2,5,12,.62);
+  backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);
+  opacity:0;visibility:hidden;transition:all .35s var(--ease);
+}
+.overlay.show{opacity:1;visibility:visible}
+
+.sidebar{
+  position:fixed;top:0;right:0;height:100%;width:min(365px,88vw);z-index:100;
+  display:flex;flex-direction:column;overflow-y:auto;
+  transform:translateX(105%);transition:transform .45s var(--ease);
+  background:linear-gradient(180deg,rgba(9,14,26,.97),rgba(4,7,14,.99));
+  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  border-left:1px solid var(--line);box-shadow:-30px 0 70px rgba(0,0,0,.6);
+}
+html[data-theme="light"] .sidebar{
+  background:linear-gradient(180deg,rgba(255,255,255,.98),rgba(240,245,255,.99));
+}
+.sidebar.open{transform:translateX(0)}
+.side-head{padding:26px 20px 18px;text-align:center}
+.side-avatar{
+  width:78px;height:78px;border-radius:24px;object-fit:cover;margin:0 auto 12px;
+  border:2px solid rgba(47,139,255,.5);
+  box-shadow:0 0 32px rgba(47,139,255,.55);
+}
+.side-name{
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  font-size:16.5px;font-weight:800;letter-spacing:.06em;
+}
+.side-name svg{width:19px;height:19px;color:var(--blue);filter:drop-shadow(0 0 8px rgba(47,139,255,.9))}
+.side-tag{margin:6px 0 0;font-size:11.5px;color:var(--dim);letter-spacing:.12em;text-transform:uppercase}
+
+.side-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:0 18px 18px;text-align:center}
+.side-stats div{
+  background:var(--glass);border:1px solid var(--line);border-radius:14px;
+  padding:11px 4px;transition:.25s var(--ease);
+}
+.side-stats div:hover{border-color:rgba(47,139,255,.45);box-shadow:0 0 20px rgba(47,139,255,.22)}
+.side-stats b{display:block;font-size:14.5px;font-weight:800;color:var(--blue-l)}
+.side-stats span{font-size:10px;color:var(--dim);letter-spacing:.04em}
+
+.side-divider{
+  height:1px;margin:0 20px 16px;
+  background:linear-gradient(90deg,transparent,rgba(47,139,255,.5),transparent);
+}
+.side-label{
+  padding:0 20px;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--dim);font-weight:700;margin-bottom:10px;
+}
+.side-links{padding:0 14px;display:flex;flex-direction:column;gap:8px}
+.side-link{
+  display:flex;align-items:center;gap:12px;padding:11px 12px;border-radius:14px;
+  border:1px solid var(--line);background:var(--glass);text-decoration:none;
+  color:var(--text);transition:all .25s var(--ease);
+}
+.side-link:hover{
+  border-color:rgba(47,139,255,.55);background:var(--glass-2);
+  box-shadow:0 0 24px rgba(47,139,255,.25);transform:translateX(-3px);
+}
+.side-ico{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;flex:none;color:#fff}
+.side-ico svg{width:19px;height:19px}
+.ico-wa{background:linear-gradient(145deg,#25d366,#0f8a45);box-shadow:0 0 18px rgba(37,211,102,.45)}
+.ico-grup{background:linear-gradient(145deg,#2f8bff,#0a54c4);box-shadow:0 0 18px rgba(47,139,255,.45)}
+.ico-tg{background:linear-gradient(145deg,#37aee2,#1e7fb0);box-shadow:0 0 18px rgba(55,174,226,.45)}
+.ico-ig{background:linear-gradient(145deg,#f8568c,#c9268f);box-shadow:0 0 18px rgba(248,86,140,.45)}
+.side-link-txt{min-width:0}
+.side-link-txt b{display:block;font-size:12.5px;font-weight:700}
+.side-link-txt span{display:block;font-size:10.5px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.side-foot{margin-top:auto;padding:20px 18px 26px}
+.side-note{font-size:10.5px;color:var(--dim);text-align:center;margin:12px 0 0;line-height:1.6}
+
+.modal{
+  position:fixed;inset:0;z-index:120;display:flex;align-items:flex-end;justify-content:center;
+  opacity:0;visibility:hidden;transition:opacity .3s ease,visibility .3s ease;
+}
+.modal.show{opacity:1;visibility:visible}
+.modal-backdrop{
+  position:absolute;inset:0;background:rgba(2,5,12,.68);
+  backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);
+}
+.modal-panel{
+  position:relative;z-index:2;width:min(580px,100%);max-height:92vh;overflow-y:auto;
+  background:var(--bg-2);border:1px solid var(--line);
+  border-radius:24px 24px 0 0;padding:18px 16px 22px;
+  box-shadow:var(--shadow);transform:translateY(34px);
+  transition:transform .38s var(--ease);overscroll-behavior:contain;
+}
+.modal.show .modal-panel{transform:translateY(0)}
+@media(min-width:660px){
+  .modal{align-items:center;padding:22px}
+  .modal-panel{border-radius:24px}
+}
+.modal-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.modal-head h3{margin:0;font-size:16.5px;font-weight:800;letter-spacing:-.01em}
+.modal-head .icon-btn{width:36px;height:36px;border-radius:11px}
+.modal-head .icon-btn svg{width:17px;height:17px}
+
+
+/* QRIS PAYMENT EXPERIENCE — refined premium layout */
+.payment-screen{animation:payFade .45s ease both}
+.payment-screen .modal-head{position:sticky;top:-18px;z-index:5;padding:4px 0 12px;background:var(--bg-2)}
+.pay-brand{padding:8px 0 2px}
+.pay-brand .pay-mark{border:1px solid rgba(255,255,255,.35)}
+.pay-total-card{position:relative;overflow:hidden}
+.pay-total-card::after{content:"";position:absolute;width:130px;height:130px;border:1px solid rgba(107,182,255,.18);border-radius:50%;right:-50px;top:-70px;box-shadow:0 0 0 15px rgba(107,182,255,.035),0 0 0 30px rgba(107,182,255,.025)}
+.qris-card{padding:18px 14px 15px;border:2px solid #e7efff;box-shadow:0 18px 45px rgba(0,0,0,.25),0 0 0 5px rgba(47,139,255,.08)}
+.qris-card img{width:min(100%,370px);max-width:100%;aspect-ratio:1;object-fit:contain;margin:0 auto;border-radius:10px;background:#fff;image-rendering:auto}
+.qris-label{margin-top:14px}
+.qris-caption{font-size:10px;color:#52627a;margin:8px 0 0;line-height:1.5}
+.pay-copy-row{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px;padding:12px 13px;border:1px solid var(--line);border-radius:13px;background:var(--glass)}
+.pay-copy-row span{font-size:11px;color:var(--dim)}
+.pay-copy-row strong{font-size:13px;color:var(--blue-l);white-space:nowrap}
+.pay-copy-row button{border:1px solid var(--line);border-radius:9px;background:var(--glass-2);color:var(--text);padding:7px 10px;font:700 10px var(--font);cursor:pointer}
+.pay-instructions{margin:14px 0}
+.pay-instructions ol{font-size:12px;line-height:1.85}
+.pay-warning{font-size:11px}
+.btn-wa-pay{min-height:50px;font-size:12px;letter-spacing:.02em}
+.pay-back{min-height:44px}
+@media(min-width:660px){.qris-card img{width:min(100%,390px)}}
+
+@keyframes payFade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.pay-brand{text-align:center;margin:4px 0 20px}
+.pay-brand .pay-mark{width:54px;height:54px;margin:0 auto 10px;border-radius:18px;display:grid;place-items:center;color:#fff;font-size:22px;font-weight:900;background:linear-gradient(145deg,#2f8bff,#0745ad);box-shadow:0 0 30px rgba(47,139,255,.45)}
+.pay-brand h3{margin:0;font-size:19px;letter-spacing:.12em;font-weight:900}
+.pay-brand p{margin:5px 0 0;color:var(--dim);font-size:12px}
+.pay-total-card{padding:17px;border-radius:18px;background:linear-gradient(135deg,rgba(47,139,255,.18),rgba(47,139,255,.045));border:1px solid rgba(47,139,255,.35);text-align:center;margin-bottom:16px}
+.pay-total-card span{display:block;color:var(--dim);font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase}
+.pay-total-card strong{display:block;color:var(--blue-l);font-size:27px;font-weight:900;margin-top:4px}
+.qris-card{padding:16px;border-radius:22px;background:#fff;border:1px solid rgba(47,139,255,.28);box-shadow:0 15px 42px rgba(0,0,0,.22),0 0 30px rgba(47,139,255,.13);text-align:center}
+.qris-card img{width:min(100%,330px);aspect-ratio:1;object-fit:contain;margin:0 auto;border-radius:12px;background:#fff}
+.qris-label{display:inline-flex;align-items:center;gap:7px;margin-top:12px;padding:7px 13px;border-radius:99px;background:#eef5ff;color:#1457ad;font-size:11px;font-weight:900;letter-spacing:.12em}
+.pay-instructions{margin:16px 0;padding:15px;border:1px solid var(--line);background:var(--glass);border-radius:16px}
+.pay-instructions h4{margin:0 0 9px;font-size:13px}
+.pay-instructions ol{padding-left:19px;margin:0;color:var(--dim);font-size:11.5px;line-height:1.8}
+.pay-warning{padding:11px 13px;border-radius:13px;border:1px solid rgba(255,201,60,.28);background:rgba(255,201,60,.07);color:var(--dim);font-size:10.5px;line-height:1.65;margin:12px 0 16px}
+.pay-actions{display:grid;gap:9px}
+.btn-wa-pay{background:linear-gradient(135deg,#25d366,#0e9148);color:#fff;box-shadow:0 10px 25px rgba(37,211,102,.2)}
+.btn-wa-pay:hover{transform:translateY(-2px);box-shadow:0 14px 30px rgba(37,211,102,.32)}
+.pay-back{background:var(--glass);border:1px solid var(--line);color:var(--text)}
+.preparing-screen{text-align:center;padding:54px 18px 62px;animation:payFade .4s ease both}
+.preparing-orbit{width:82px;height:82px;margin:0 auto 22px;border-radius:50%;display:grid;place-items:center;border:3px solid rgba(47,139,255,.18);border-top-color:var(--blue);animation:spin .85s linear infinite;box-shadow:0 0 34px rgba(47,139,255,.25)}
+.preparing-orbit span{width:48px;height:48px;border-radius:50%;background:rgba(47,139,255,.14);display:grid;place-items:center;color:var(--blue-l);font-size:22px;animation:spin 1.5s linear infinite reverse}
+.preparing-screen h3{font-size:17px;margin:0 0 8px}
+.preparing-screen p{font-size:12px;color:var(--dim);margin:0;line-height:1.7}
+.preparing-dots::after{content:"";animation:loadingDots 1.2s steps(4,end) infinite}
+@keyframes loadingDots{0%{content:""}25%{content:"."}50%{content:".."}75%,100%{content:"..."}}
+
+/* ===== TELEGRAM ORDER — UPLOAD BUKTI PEMBAYARAN ===== */
+.pay-upload{display:block;margin:14px 0;padding:16px 14px;border:1.5px dashed rgba(47,139,255,.45);
+  border-radius:16px;background:rgba(47,139,255,.05);text-align:center;cursor:pointer;
+  transition:.25s var(--ease);-webkit-tap-highlight-color:transparent}
+.pay-upload:hover{border-color:var(--blue);background:rgba(47,139,255,.1);box-shadow:0 0 24px rgba(47,139,255,.18)}
+.pay-upload.has-file{border-style:solid;border-color:rgba(37,211,102,.55);background:rgba(37,211,102,.07)}
+.pay-upload input{display:none}
+.pu-icon{width:46px;height:46px;margin:0 auto 10px;border-radius:14px;display:grid;place-items:center;
+  color:#fff;background:linear-gradient(145deg,#2f8bff,#0a54c4);box-shadow:0 0 20px rgba(47,139,255,.45)}
+.pu-icon svg{width:22px;height:22px}
+.pay-upload.has-file .pu-icon{background:linear-gradient(145deg,#25d366,#0e9148);box-shadow:0 0 20px rgba(37,211,102,.45)}
+.pu-title{font-size:12.5px;font-weight:800;margin:0 0 5px}
+.pu-sub{font-size:11px;color:var(--dim);margin:0;line-height:1.6}
+.pu-preview{margin-top:12px;display:none}
+.pay-upload.has-file .pu-preview{display:block}
+.pay-upload.has-file .pu-title,
+.pay-upload.has-file .pu-sub{display:none}
+.pu-preview img{width:100%;max-height:240px;object-fit:contain;border-radius:12px;
+  border:1px solid var(--line);background:#0b1220}
+.pu-filename{font-size:10.5px;color:var(--dim);margin:8px 0 0;word-break:break-all}
+.pu-remove{margin-top:9px;border:1px solid var(--line);background:var(--glass-2);color:var(--dim);
+  font:700 10.5px var(--font);padding:7px 13px;border-radius:9px;cursor:pointer;transition:.2s}
+.pu-remove:hover{color:var(--danger);border-color:rgba(255,84,112,.5);background:rgba(255,84,112,.1)}
+.btn-tg-send{background:linear-gradient(135deg,#37aee2,#1e7fb0);color:#fff;
+  box-shadow:0 10px 26px rgba(55,174,226,.32);min-height:50px;font-size:12px;letter-spacing:.02em}
+.btn-tg-send:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 14px 32px rgba(55,174,226,.45)}
+.btn-tg-send:disabled{opacity:.55;cursor:not-allowed;transform:none}
+.btn-tg-send .spinner{display:inline-block;width:15px;height:15px;border-radius:50%;
+  border:2px solid rgba(255,255,255,.35);border-top-color:#fff;animation:spin .7s linear infinite;vertical-align:-3px;margin-right:7px}
+.send-status{margin-top:10px;font-size:11px;text-align:center;font-weight:700;line-height:1.6;display:none}
+.send-status.show{display:block}
+.send-status.err{color:#ff8fa3}
+.success-screen{text-align:center;padding:40px 16px 48px;animation:payFade .4s ease both}
+.success-badge{width:78px;height:78px;margin:0 auto 18px;border-radius:50%;display:grid;place-items:center;
+  color:#fff;background:linear-gradient(145deg,#25d366,#0e9148);box-shadow:0 0 36px rgba(37,211,102,.5);
+  font-size:36px;font-weight:900}
+.success-screen h3{font-size:18px;margin:0 0 8px}
+.success-screen p{font-size:12.5px;color:var(--dim);line-height:1.75;margin:0 0 6px}
+.success-ref{margin:16px 0 18px;padding:12px 13px;border-radius:13px;border:1px solid var(--line);
+  background:var(--glass);font-size:11.5px;color:var(--dim);line-height:1.65}
+.success-ref b{color:var(--blue-l)}
+
+.cart-item{
+  display:flex;gap:10px;padding:10px;border-radius:14px;
+  border:1px solid var(--line);background:var(--glass);margin-bottom:9px;
+}
+.cart-item img{width:56px;height:56px;border-radius:11px;object-fit:cover;flex:none;border:1px solid var(--line)}
+.ci-main{flex:1;min-width:0}
+.ci-name{font-size:12.5px;font-weight:700;line-height:1.35}
+.ci-meta{font-size:10.5px;color:var(--dim);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ci-bottom{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px}
+.qty{display:flex;align-items:center;gap:7px}
+.qty button{
+  width:26px;height:26px;border-radius:8px;border:1px solid var(--line);
+  background:var(--glass-2);color:var(--text);cursor:pointer;font-weight:800;
+  font-size:13px;line-height:1;display:grid;place-items:center;transition:.2s;
+}
+.qty button:hover{border-color:var(--blue);box-shadow:0 0 14px rgba(47,139,255,.35)}
+.qty span{font-size:12.5px;font-weight:800;min-width:16px;text-align:center}
+.ci-price{font-size:12.5px;font-weight:800;color:var(--blue-l);white-space:nowrap}
+.ci-del{
+  border:0;background:transparent;color:var(--dim);cursor:pointer;
+  width:26px;height:26px;border-radius:8px;flex:none;font-size:14px;transition:.2s;
+}
+.ci-del:hover{color:var(--danger);background:rgba(255,84,112,.12)}
+
+.cart-footer{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
+.total-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.total-row span{font-size:12.5px;color:var(--dim);font-weight:600}
+.total-row b{font-size:19px;font-weight:800;color:var(--blue-l)}
+
+.empty{padding:40px 14px;text-align:center;color:var(--dim);font-size:13px}
+.empty .big{font-size:36px;display:block;margin-bottom:10px;opacity:.55}
+
+.order-summary{
+  border:1px solid var(--line);border-radius:14px;background:var(--glass);
+  padding:12px;margin-bottom:16px;
+}
+.os-row{display:flex;justify-content:space-between;gap:12px;font-size:12px;padding:5px 0;color:var(--dim)}
+.os-row b{color:var(--text)}
+.os-row span:last-child{color:var(--text);font-weight:700;white-space:nowrap}
+.os-total{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:8px;padding-top:9px;border-top:1px dashed var(--line);
+  font-size:13px;font-weight:800;
+}
+.os-total b{color:var(--blue-l);font-size:15px}
+
+.field{margin-bottom:13px}
+.field label{display:block;font-size:12px;font-weight:700;margin-bottom:6px;line-height:1.4}
+.field label .req{color:var(--danger)}
+.input{
+  width:100%;padding:12px 14px;border-radius:12px;
+  border:1px solid var(--line);background:var(--glass);color:var(--text);
+  font-family:inherit;font-size:13.5px;outline:none;transition:all .25s var(--ease);
+}
+.input::placeholder{color:var(--dim);opacity:.85}
+.input:focus{
+  border-color:var(--blue);background:var(--glass-2);
+  box-shadow:0 0 0 3px rgba(47,139,255,.15);
+}
+textarea.input{resize:vertical;min-height:78px;line-height:1.55}
+.input.invalid{border-color:var(--danger);box-shadow:0 0 0 3px rgba(255,84,112,.14)}
+.err{display:none;color:#ff7a90;font-size:11.5px;margin-top:6px;font-weight:600;line-height:1.4}
+.err.show{display:block}
+
+.info-box{
+  border:1px solid rgba(47,139,255,.3);border-radius:12px;
+  background:rgba(47,139,255,.07);padding:11px 13px;margin-bottom:13px;
+}
+.info-box summary{
+  cursor:pointer;font-size:12px;font-weight:800;color:var(--blue-l);
+  list-style:none;display:flex;align-items:center;gap:7px;
+}
+.info-box summary::-webkit-details-marker{display:none}
+.info-box summary::after{content:"+";margin-left:auto;font-size:15px;transition:.25s}
+.info-box[open] summary::after{content:"−"}
+.info-box ol{margin:9px 0 0;padding-left:19px;font-size:11.5px;color:var(--dim);line-height:1.75}
+.info-box ol li{margin-bottom:2px}
+
+.toast{
+  position:fixed;left:50%;bottom:22px;z-index:300;transform:translate(-50%,22px);
+  display:flex;align-items:center;gap:9px;padding:12px 18px;border-radius:14px;
+  background:var(--bg-3);border:1px solid rgba(47,139,255,.45);color:var(--text);
+  font-size:12.5px;font-weight:700;
+  box-shadow:var(--shadow), 0 0 30px rgba(47,139,255,.28);
+  opacity:0;visibility:hidden;transition:all .32s var(--ease);
+  max-width:calc(100vw - 32px);text-align:center;
+}
+.toast.show{opacity:1;visibility:visible;transform:translate(-50%,0)}
+.toast svg{width:16px;height:16px;color:var(--blue-l);flex:none}
+
+.reveal{opacity:0;transform:translateY(26px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+.reveal.in{opacity:1;transform:none}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms !important;transition-duration:.001ms !important}
+}
+</style>
+</head>
+<body>
+
+<div id="preloader"><div class="loader-ring"></div></div>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="#" aria-label="RIKY STORE Beranda">
+      <span class="brand-logo">R</span>
+      <span class="brand-name">RIKY <b>STORE</b></span>
+    </a>
+
+    <div class="header-actions">
+      <div class="theme-wrap">
+        <button class="icon-btn" id="themeBtn" aria-label="Pilih tema" aria-haspopup="true" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>
+          </svg>
+        </button>
+        <div class="dropdown" id="themeMenu" role="menu">
+          <button data-theme-opt="system" role="menuitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+            Default Sistem
+          </button>
+          <button data-theme-opt="light" role="menuitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+            Terang (Light)
+          </button>
+          <button data-theme-opt="dark" role="menuitem">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+            Gelap (Dark)
+          </button>
+        </div>
+      </div>
+
+      <button class="icon-btn" id="cartBtn" aria-label="Buka keranjang">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="20" r="1.6"/><circle cx="18" cy="20" r="1.6"/>
+          <path d="M2 3h3l2.4 12.2a2 2 0 0 0 2 1.6h8.2a2 2 0 0 0 2-1.6L21 7H6"/>
+        </svg>
+        <span class="cart-badge" id="cartBadge">0</span>
+      </button>
+
+      <button class="icon-btn" id="burgerBtn" aria-label="Buka menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+          <path d="M4 7h16M4 12h16M4 17h16"/>
+        </svg>
+      </button>
+    </div>
+
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <circle cx="11" cy="11" r="7"/><path d="M20 20l-3.2-3.2"/>
+      </svg>
+      <input id="searchInput" type="search" placeholder="Cari produk…" autocomplete="off" aria-label="Cari produk">
+      <button id="searchClear" aria-label="Hapus pencarian">✕</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="container">
+      <div class="hero-badge">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.5l2.6 1.9 3.2-.2.9 3.1 2.6 1.9-1.4 2.9 1.4 2.9-2.6 1.9-.9 3.1-3.2-.2L12 22.5l-2.6-1.9-3.2.2-.9-3.1-2.6-1.9L4.1 12 2.7 9.1l2.6-1.9.9-3.1 3.2.2L12 1.5zm-1.2 13.6l5.2-5.2-1.5-1.5-3.7 3.7-1.9-1.9-1.5 1.5 3.4 3.4z"/></svg>
+        Official Premium Store
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-bg" id="heroBg"></div>
+        <div class="hero-slider" id="heroSlider">
+          <div class="hero-track" id="heroTrack">
+            <div class="hero-slide"><img src="https://i.ibb.co.com/bjN68fx8/file-0000000016c0821196aa149faec994be.png" alt="RIKY STORE Cover"></div>
+            <div class="hero-slide"><img src="https://i.ibb.co.com/3mYvy3Xf/file-0000000065bc82119fe559c380cf63e3.png" alt="RIKY STORE Digital"></div>
+            <div class="hero-slide"><img src="https://i.ibb.co.com/qMs2VJWr/file-0000000056888211be8f12ebfed98174.png" alt="RIKY STORE Slide 3"></div>
+            <div class="hero-slide"><img src="https://i.ibb.co.com/21nbXjMX/file-00000000b29c82119b082db402785c93.png" alt="RIKY STORE Slide 4"></div>
+          </div>
+        </div>
+        <div class="hero-dots" id="heroDots"></div>
+      </div>
+
+      <h1 class="hero-title">WELCOME TO RIKY STORE</h1>
+      <p class="hero-sub">Toko digital terpercaya untuk kebutuhan premium Anda.</p>
+    </div>
+  </section>
+
+  <section class="section" id="katalog">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Katalog Produk</span>
+        <h2 class="section-title">Pilih Paket Bot WhatsApp Anda</h2>
+        <p class="section-sub">Geser ke kiri / kanan untuk melihat kategori lainnya.</p>
+      </div>
+
+      <div id="catalogNormal" class="reveal">
+        <div class="cat-tabs" id="catTabs">
+          <button class="cat-tab active" data-tab="0">Grup Biasa</button>
+          <button class="cat-tab" data-tab="1">Grup Premium</button>
+          <button class="cat-tab" data-tab="2">User Premium</button>
+        </div>
+        <div class="carousel" id="catCarousel">
+          <div class="cat-track" id="catTrack"></div>
+        </div>
+        <div class="cat-dots" id="catDots"></div>
+      </div>
+
+      <div id="searchArea" hidden>
+        <p class="section-sub" id="searchInfo" style="margin-bottom:18px"></p>
+        <div class="search-results" id="searchResults"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:22px">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Cara Pemesanan</span>
+        <h2 class="section-title">Hanya 3 Langkah Mudah</h2>
+        <p class="section-sub">Proses pemesanan cepat, aman, dan transparan.</p>
+      </div>
+      <div class="steps reveal">
+        <div class="step-card">
+          <span class="step-num">1</span>
+          <h4>Pilih Produk</h4>
+          <p>Tentukan paket bot WhatsApp sesuai kebutuhan Anda dari katalog.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num">2</span>
+          <h4>Isi Data</h4>
+          <p>Lengkapi formulir pemesanan: nama, kontak, dan link grup / nomor.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num">3</span>
+          <h4>Bayar &amp; Kirim Bukti</h4>
+          <p>Scan QRIS, unggah foto bukti transfer, lalu laporan otomatis dikirim ke bot Telegram owner.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="testimoni">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Contoh Ulasan</span>
+        <h2 class="section-title">Cerita Pengalaman di RIKY STORE</h2>
+        <p class="section-sub">Geser kartu untuk melihat berbagai contoh ulasan layanan, website, dan bantuan owner.</p>
+      </div>
+      <div class="tst-wrap reveal" id="tstWrap">
+        <div class="tst-track" id="tstTrack"></div>
+      </div>
+      <div class="cat-dots" id="tstDots"></div>
+    </div>
+  </section>
+
+  <section class="section" id="faq">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">FAQ</span>
+        <h2 class="section-title">Pertanyaan Umum</h2>
+        <p class="section-sub">Klik pertanyaan untuk melihat jawabannya.</p>
+      </div>
+      <div class="faq-list reveal" id="faqList"></div>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:22px">
+    <div class="container">
+      <div class="cta-box reveal">
+        <h3>Siap Memulai Bersama RIKY STORE?</h3>
+        <p>Konsultasikan kebutuhan bot WhatsApp Anda langsung dengan owner. Respon cepat, ramah, dan siap membantu 24/7.</p>
+        <div class="cta-actions">
+          <a href="https://wa.me/6289507390286" target="_blank" rel="noopener" class="btn btn-primary">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.82 9.82 0 0 1 6.988 2.898 9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0 0 20.465 3.488"/></svg>
+            Chat Owner Sekarang
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="footer-brand">RIKY STORE</div>
+    <p class="footer-tag">Your Digital Needs, Our Priority.</p>
+
+    <div class="footer-links">
+      <a class="f-link" href="https://wa.me/6289507390286" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.82 9.82 0 0 1 6.988 2.898 9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0 0 20.465 3.488"/></svg>
+        WhatsApp Owner
+      </a>
+      <a class="f-link" href="https://chat.whatsapp.com/JGT5J7oGQqc2uE3O367W3R?s=cl&p=a&iam=2" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Group WhatsApp
+      </a>
+      <a class="f-link" href="https://t.me/Rikystore" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.36 8.627-.168.9-.5 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.259-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+        Telegram
+      </a>
+      <a class="f-link" href="https://www.instagram.com/newkinky?psln=ejN5ZThhdXpoNnEy" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+        Instagram
+      </a>
+    </div>
+    <p class="copyright">© <span id="year">2025</span> Riky Store. All rights reserved.</p>
+  </div>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+
+<aside class="sidebar" id="sidebar" aria-hidden="true">
+  <div class="side-head">
+    <img class="side-avatar" src="https://i.ibb.co.com/q3ZPjkP8/file-00000000b60c8207a85013ec00617b2d.png" alt="RIKY STORE">
+    <div class="side-name">
+      RIKY STORE
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-label="Terverifikasi">
+        <path d="M12 1.5l2.6 1.9 3.2-.2.9 3.1 2.6 1.9-1.4 2.9 1.4 2.9-2.6 1.9-.9 3.1-3.2-.2L12 22.5l-2.6-1.9-3.2.2-.9-3.1-2.6-1.9L4.1 12 2.7 9.1l2.6-1.9.9-3.1 3.2.2L12 1.5zm-1.2 13.6l5.2-5.2-1.5-1.5-3.7 3.7-1.9-1.9-1.5 1.5 3.4 3.4z"/>
+      </svg>
+    </div>
+    <p class="side-tag">Premium Digital Store</p>
+  </div>
+
+  <div class="side-stats">
+    <div><b>2000+</b><span>Pelanggan</span></div>
+    <div><b>24/7</b><span>Support</span></div>
+    <div><b>99%</b><span>Kepuasan</span></div>
+  </div>
+
+  <div class="side-divider"></div>
+  <div class="side-label">Kontak &amp; Media Sosial</div>
+
+  <div class="side-links">
+    <a class="side-link" href="https://wa.me/6289507390286" target="_blank" rel="noopener">
+      <span class="side-ico ico-wa">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.82 9.82 0 0 1 6.988 2.898 9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893A11.821 11.821 0 0 0 20.465 3.488"/></svg>
+      </span>
+      <span class="side-link-txt"><b>WhatsApp Owner</b><span>Chat langsung dengan owner</span></span>
+    </a>
+
+    <a class="side-link" href="https://chat.whatsapp.com/JGT5J7oGQqc2uE3O367W3R?s=cl&p=a&iam=2" target="_blank" rel="noopener">
+      <span class="side-ico ico-grup">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </span>
+      <span class="side-link-txt"><b>Group WhatsApp Bot</b><span>Gabung grup bot resmi</span></span>
+    </a>
+
+    <a class="side-link" href="https://t.me/Rikystore" target="_blank" rel="noopener">
+      <span class="side-ico ico-tg">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.36 8.627-.168.9-.5 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.259-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+      </span>
+      <span class="side-link-txt"><b>Telegram</b><span>Chat via Telegram</span></span>
+    </a>
+
+    <a class="side-link" href="https://www.instagram.com/newkinky?psln=ejN5ZThhdXpoNnEy" target="_blank" rel="noopener">
+      <span class="side-ico ico-ig">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+      </span>
+      <span class="side-link-txt"><b>Instagram</b><span>Follow Instagram kami</span></span>
+    </a>
+  </div>
+
+  <div class="side-foot">
+    <button class="btn btn-primary btn-block" id="sideClose">CLOSE</button>
+    <p class="side-note">RIKY STORE — Your Digital Needs, Our Priority.</p>
+  </div>
+</aside>
+
+<div class="modal" id="cartModal" aria-hidden="true">
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-label="Keranjang Belanja">
+    <div class="modal-head">
+      <h3>Keranjang Belanja</h3>
+      <button class="icon-btn" data-close-modal aria-label="Tutup keranjang">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div id="cartBody"></div>
+    <div class="cart-footer" id="cartFooter" style="display:none">
+      <div class="total-row"><span>Total Pembayaran</span><b id="cartTotal">Rp0</b></div>
+      <button class="btn btn-primary btn-block" id="checkoutBtn">CHECKOUT SEKARANG</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="checkoutModal" aria-hidden="true">
+  <div class="modal-backdrop" data-close-modal></div>
+  <div class="modal-panel" role="dialog" aria-modal="true" aria-label="Formulir Pemesanan">
+    <div id="checkoutContent"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+  <span id="toastText">Berhasil</span>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  const OWNER_WA    = '6289507390286';
+  const PRODUCT_IMG = 'https://i.ibb.co.com/1G7gk2gY/file-00000000ecdc82118a5e9f222594d94f.png';
+
+  /* ====== LAPORAN PESANAN → BOT TELEGRAM ====== */
+  const TG_BOT_TOKEN = '9039394974:AAHBfZAkYkcCH83sxaEPqBFh9vmPbMvYvsI';
+  const TG_CHAT_ID   = '8744341504';
+  const TG_API       = 'https://api.telegram.org/bot' + TG_BOT_TOKEN + '/';
+
+  const CATEGORIES = [
+    {
+      key: 'biasa', label: 'Grup Biasa', title: 'BOT WHATSAPP GRUP BIASA', type: 'group',
+      desc: 'Bot WhatsApp untuk grup biasa dengan performa stabil.',
+      items: [
+        { id:'gb-1', name:'1 Bulan Grup Biasa', dur:'1 Bulan', days:30,  price:20000, desc:'Akses bot WhatsApp untuk grup biasa selama 1 bulan penuh.' },
+        { id:'gb-2', name:'2 Bulan Grup Biasa', dur:'2 Bulan', days:60,  price:30000, desc:'Akses bot WhatsApp untuk grup biasa selama 2 bulan.' },
+        { id:'gb-3', name:'3 Bulan Grup Biasa', dur:'3 Bulan', days:90,  price:35000, desc:'Akses bot WhatsApp untuk grup biasa selama 3 bulan.' },
+        { id:'gb-4', name:'4 Bulan Grup Biasa', dur:'4 Bulan', days:120, price:45000, desc:'Akses bot WhatsApp untuk grup biasa selama 4 bulan.' }
+      ]
+    },
+    {
+      key: 'premium', label: 'Grup Premium', title: 'BOT WHATSAPP GRUP PREMIUM', type: 'group',
+      desc: 'Bot WhatsApp premium dengan fitur lebih lengkap.',
+      items: [
+        { id:'gp-1', name:'1 Bulan Grup Premium', dur:'1 Bulan', days:30,  price:25000, desc:'Akses bot WhatsApp grup premium selama 1 bulan penuh.' },
+        { id:'gp-2', name:'2 Bulan Grup Premium', dur:'2 Bulan', days:60,  price:35000, desc:'Akses bot WhatsApp grup premium selama 2 bulan.' },
+        { id:'gp-3', name:'3 Bulan Grup Premium', dur:'3 Bulan', days:90,  price:45000, desc:'Akses bot WhatsApp grup premium selama 3 bulan.' },
+        { id:'gp-4', name:'4 Bulan Grup Premium', dur:'4 Bulan', days:120, price:55000, desc:'Akses bot WhatsApp grup premium selama 4 bulan.' }
+      ]
+    },
+    {
+      key: 'user', label: 'User Premium', title: 'BOT WHATSAPP USER PREMIUM', type: 'user',
+      desc: 'Layanan premium untuk akun WhatsApp pribadi Anda.',
+      items: [
+        { id:'up-1', name:'1 Bulan User Premium', dur:'1 Bulan', days:30,  price:15000, desc:'Akses bot untuk akun WhatsApp pribadi selama 1 bulan.' },
+        { id:'up-2', name:'2 Bulan User Premium', dur:'2 Bulan', days:60,  price:20000, desc:'Akses bot untuk akun WhatsApp pribadi selama 2 bulan.' },
+        { id:'up-3', name:'3 Bulan User Premium', dur:'3 Bulan', days:90,  price:25000, desc:'Akses bot untuk akun WhatsApp pribadi selama 3 bulan.' },
+        { id:'up-4', name:'4 Bulan User Premium', dur:'4 Bulan', days:120, price:30000, desc:'Akses bot untuk akun WhatsApp pribadi selama 4 bulan.' }
+      ]
+    }
+  ];
+
+  const ALL = {};
+  CATEGORIES.forEach(cat => {
+    cat.items.forEach(p => {
+      p.type = cat.type;
+      p.category = cat.title;
+      p.categoryLabel = cat.label;
+      ALL[p.id] = p;
+    });
+  });
+
+  const TESTIMONIALS = [
+    { initials:'A01', name:'Andi Pratama', role:'Contoh ulasan • Grup Biasa', text:'Tampilan websitenya mudah dipahami. Pilih paket, isi data, lalu lanjut WhatsApp, semuanya terasa praktis.' },
+    { initials:'A02', name:'Siti Rahma', role:'Contoh ulasan • User Premium', text:'Adminnya menjelaskan proses dengan bahasa yang ramah dan mudah dimengerti. Jadi tidak bingung saat memesan.' },
+    { initials:'A03', name:'Bagas Wibowo', role:'Contoh ulasan • Grup Premium', text:'Suka karena pilihan paketnya jelas. Informasi harga dan durasi bisa dilihat sebelum menghubungi owner.' },
+    { initials:'A04', name:'Dinda Nuraini', role:'Contoh ulasan • Grup Biasa', text:'Desain websitenya rapi dan nyaman dibuka lewat HP. Proses pemesanan juga tidak berbelit-belit.' },
+    { initials:'A05', name:'Rizky Fadilah', role:'Contoh ulasan • User Premium', text:'Form pemesanannya membantu banget karena data yang diperlukan sudah tersusun dengan jelas.' },
+    { initials:'A06', name:'Nadia Putri', role:'Contoh ulasan • Grup Premium', text:'Owner memberikan arahan dengan sopan. Kalau ada bagian yang belum paham, dijelaskan satu per satu.' },
+    { initials:'A07', name:'Fajar Ramadhan', role:'Contoh ulasan • Grup Biasa', text:'Menurut saya websitenya simpel, tidak bikin bingung, dan tombol menuju WhatsApp mudah ditemukan.' },
+    { initials:'A08', name:'Aulia Safitri', role:'Contoh ulasan • User Premium', text:'Informasi layanan disampaikan dengan jelas. Saya jadi lebih mudah menentukan paket yang dibutuhkan.' },
+    { initials:'A09', name:'Dimas Saputra', role:'Contoh ulasan • Grup Premium', text:'Katalog produknya tertata. Bisa membandingkan pilihan paket lebih dulu sebelum melakukan pemesanan.' },
+    { initials:'A10', name:'Nabila Zahra', role:'Contoh ulasan • Grup Biasa', text:'Suka dengan pelayanan yang komunikatif. Pertanyaan dijawab dengan baik dan tidak terkesan terburu-buru.' },
+    { initials:'A11', name:'Rafi Maulana', role:'Contoh ulasan • User Premium', text:'Alur pesanannya mudah diikuti. Tinggal lengkapi data dengan teliti lalu konfirmasi lewat WhatsApp.' },
+    { initials:'A12', name:'Citra Lestari', role:'Contoh ulasan • Grup Premium', text:'Tampilannya elegan dan informasinya tidak terlalu ramai. Nyaman untuk mencari layanan yang diperlukan.' },
+    { initials:'A13', name:'Ilham Akbar', role:'Contoh ulasan • Grup Biasa', text:'Owner cukup responsif saat dihubungi dan membantu menjelaskan langkah pemesanan.' },
+    { initials:'A14', name:'Maya Amelia', role:'Contoh ulasan • User Premium', text:'Saya suka karena detail pesanan bisa diperiksa kembali sebelum dikirim ke WhatsApp.' },
+    { initials:'A15', name:'Reza Firmansyah', role:'Contoh ulasan • Grup Premium', text:'Pilihan durasi layanan mudah dilihat. Website seperti ini membuat proses awal pemesanan lebih praktis.' },
+    { initials:'A16', name:'Putri Ananda', role:'Contoh ulasan • Grup Biasa', text:'Adminnya ramah dan menjawab pertanyaan dengan sabar. Komunikasinya terasa nyaman.' },
+    { initials:'A17', name:'Yoga Pratama', role:'Contoh ulasan • User Premium', text:'Navigasi websitenya cukup jelas, terutama saat berpindah dari katalog ke keranjang.' },
+    { initials:'A18', name:'Intan Permata', role:'Contoh ulasan • Grup Premium', text:'Penjelasan paketnya membantu saya memahami layanan sebelum memutuskan untuk order.' },
+    { initials:'A19', name:'Rangga Wijaya', role:'Contoh ulasan • Grup Biasa', text:'Website ringan dan tampilannya konsisten. Bagian penting seperti harga dan kontak mudah ditemukan.' },
+    { initials:'A20', name:'Fina Oktaviani', role:'Contoh ulasan • User Premium', text:'Owner menyampaikan informasi dengan baik dan tidak memaksa saat saya masih bertanya-tanya.' },
+    { initials:'A21', name:'Ardiansyah Putra', role:'Contoh ulasan • Grup Premium', text:'Cara pemesanan dijelaskan dalam langkah sederhana. Cocok untuk pengguna yang baru pertama kali order.' },
+    { initials:'A22', name:'Lia Marlina', role:'Contoh ulasan • Grup Biasa', text:'Saya suka susunan katalog yang rapi. Tidak perlu mencari terlalu lama untuk menemukan paket.' },
+    { initials:'A23', name:'Bima Kurniawan', role:'Contoh ulasan • User Premium', text:'Tombol pesan langsung mengarahkan ke WhatsApp dengan alur yang mudah dipahami.' },
+    { initials:'A24', name:'Dewi Anggraini', role:'Contoh ulasan • Grup Premium', text:'Pelayanan terasa bersahabat. Saya mendapat penjelasan ketika ingin memastikan detail layanan.' },
+    { initials:'A25', name:'Farhan Hidayat', role:'Contoh ulasan • Grup Biasa', text:'Desain birunya enak dilihat dan informasi utama tersusun dengan cukup lengkap.' },
+    { initials:'A26', name:'Anisa Fitri', role:'Contoh ulasan • User Premium', text:'Proses konsultasi terasa nyaman karena admin menjawab dengan sopan dan jelas.' },
+    { initials:'A27', name:'Kevin Saputra', role:'Contoh ulasan • Grup Premium', text:'Sistem keranjang membantu merangkum pesanan sehingga lebih mudah mengecek pilihan.' },
+    { initials:'A28', name:'Vina Aprilia', role:'Contoh ulasan • Grup Biasa', text:'Website bisa dibuka dengan nyaman di layar ponsel. Menu dan tombolnya mudah dikenali.' },
+    { initials:'A29', name:'Aldi Setiawan', role:'Contoh ulasan • User Premium', text:'Informasi yang ditampilkan membantu saya menyiapkan data sebelum menghubungi owner.' },
+    { initials:'A30', name:'Nisa Ramadhani', role:'Contoh ulasan • Grup Premium', text:'Saya menghargai komunikasi yang terbuka. Jika ada yang perlu dikonfirmasi, owner menjelaskannya.' },
+    { initials:'A31', name:'Gilang Prakoso', role:'Contoh ulasan • Grup Biasa', text:'Katalog tidak terasa berantakan. Harga, kategori, dan durasi ditampilkan dengan cukup jelas.' },
+    { initials:'A32', name:'Syifa Azzahra', role:'Contoh ulasan • User Premium', text:'Adminnya sabar saat saya menanyakan beberapa hal. Penjelasannya mudah diikuti.' },
+    { initials:'A33', name:'Rian Nugraha', role:'Contoh ulasan • Grup Premium', text:'Alur pemesanan dari website ke WhatsApp terasa praktis dan tidak membingungkan.' },
+    { initials:'A34', name:'Tasya Maharani', role:'Contoh ulasan • Grup Biasa', text:'Tampilan website terlihat profesional. Saya juga mudah menemukan informasi kontak owner.' },
+    { initials:'A35', name:'Hendra Gunawan', role:'Contoh ulasan • User Premium', text:'Sebelum order, saya bisa membaca detail layanan dan menanyakan hal yang belum jelas.' },
+    { initials:'A36', name:'Bella Novitasari', role:'Contoh ulasan • Grup Premium', text:'Pelayanannya komunikatif dan pilihan paketnya tersusun rapi. Pengalaman konsultasinya menyenangkan.' },
+    { initials:'A37', name:'Daffa Alfarizi', role:'Contoh ulasan • Grup Biasa', text:'Suka dengan proses yang sederhana. Tidak banyak langkah yang harus dilakukan untuk mengirim pesanan.' },
+    { initials:'A38', name:'Rara Puspita', role:'Contoh ulasan • User Premium', text:'Owner menjawab dengan sopan dan membantu memastikan data pesanan sudah sesuai.' },
+    { initials:'A39', name:'Eko Saputro', role:'Contoh ulasan • Grup Premium', text:'Bagian FAQ cukup membantu untuk memahami cara order dan data yang perlu disiapkan.' },
+    { initials:'A40', name:'Nayla Khairunnisa', role:'Contoh ulasan • Grup Biasa', text:'Tampilan bersih dan nyaman. Saya bisa fokus melihat produk tanpa terganggu elemen berlebihan.' },
+    { initials:'A41', name:'Aditya Firmansyah', role:'Contoh ulasan • User Premium', text:'Proses konsultasi terasa jelas. Saya tahu langkah berikutnya setelah mengirim detail kebutuhan.' },
+    { initials:'A42', name:'Melati Sari', role:'Contoh ulasan • Grup Premium', text:'Adminnya ramah dan terbuka saat menjelaskan layanan. Itu membuat saya lebih nyaman bertanya.' },
+    { initials:'A43', name:'Rizal Fauzi', role:'Contoh ulasan • Grup Biasa', text:'Website memudahkan saya melihat layanan yang tersedia dalam satu tempat.' },
+    { initials:'A44', name:'Karin Amelia', role:'Contoh ulasan • User Premium', text:'Detail yang harus diisi cukup jelas, jadi mengurangi risiko salah mengirim informasi.' },
+    { initials:'A45', name:'Tegar Pratama', role:'Contoh ulasan • Grup Premium', text:'Saya suka komunikasi yang sopan dan penjelasan yang langsung ke inti kebutuhan.' },
+    { initials:'A46', name:'Ayu Wulandari', role:'Contoh ulasan • Grup Biasa', text:'Menu websitenya mudah dipahami. Dari katalog sampai kontak owner semuanya mudah dijangkau.' },
+    { initials:'A47', name:'Doni Kurnia', role:'Contoh ulasan • User Premium', text:'Owner membantu menjawab pertanyaan sebelum saya menentukan paket yang sesuai.' },
+    { initials:'A48', name:'Elsa Maharani', role:'Contoh ulasan • Grup Premium', text:'Desainnya modern dan pengalaman membuka website lewat ponsel terasa nyaman.' },
+    { initials:'A49', name:'M. Farrel', role:'Contoh ulasan • Grup Biasa', text:'Informasi pemesanan tersusun dalam tiga langkah yang sederhana. Sangat membantu pengguna baru.' },
+    { initials:'A50', name:'Zahra Nurfadila', role:'Contoh ulasan • User Premium', text:'Secara keseluruhan tampilannya rapi dan komunikasinya ramah. Semoga layanan dan websitenya terus berkembang.' }
+  ];
+
+  const FAQS = [
+    { q:'Apa itu Riky Store?', a:'Riky Store adalah toko digital yang menyediakan layanan bot WhatsApp untuk grup maupun akun pribadi (User Premium). Kami menyediakan paket 1 hingga 4 bulan dengan proses cepat dan dukungan 24 jam.' },
+    { q:'Bagaimana cara membeli produk?', a:'Pilih produk yang diinginkan, klik "Tambah ke Keranjang" atau "Beli Sekarang", isi formulir data pembeli, lalu klik "Kirim Pesanan". Setelah itu scan QRIS, unggah foto bukti pembayaran, dan tekan "Kirim Pesanan". Laporan otomatis masuk ke bot Telegram Owner untuk dikonfirmasi.' },
+    { q:'Bagaimana cara mendapatkan link grup?', a:'Buka WhatsApp → masuk ke grup → klik nama grup di bagian atas → pilih "Undang via Tautan" → salin tautan → tempelkan pada kolom link grup di formulir pemesanan.' },
+    { q:'Apakah bisa membeli User Premium?', a:'Bisa. Pilih kategori "User Premium" pada katalog, lalu isi nomor WhatsApp pribadi yang ingin dipremiumkan. Pastikan nomor menggunakan kode negara Indonesia (+62) dan masih aktif.' },
+    { q:'Bagaimana cara mengetahui pesanan diterima?', a:'Setelah Anda mengirim pesanan dan bukti pembayaran, laporan otomatis terkirim ke bot Telegram Owner. Owner akan menghubungi Anda lewat WhatsApp untuk konfirmasi. Status pesanan hanya sah apabila sudah dikonfirmasi langsung oleh owner.' },
+    { q:'Bagaimana cara menghubungi Owner?', a:'Anda dapat menghubungi owner melalui WhatsApp, grup WhatsApp bot resmi, Telegram, atau Instagram resmi Riky Store.' },
+    { q:'Apakah tersedia bantuan 24 jam?', a:'Ya. Tim support Riky Store berkomitmen memberikan bantuan 24 jam setiap hari. Jika belum dibalas, mohon tunggu beberapa saat karena antrean pesanan.' }
+  ];
+
+  const $  = (sel, root) => (root || document).querySelector(sel);
+  const $$ = (sel, root) => Array.prototype.slice.call((root || document).querySelectorAll(sel));
+
+  function rupiah(n) { return 'Rp' + Number(n).toLocaleString('id-ID'); }
+  function esc(str) {
+    return String(str).replace(/[&<>"']/g, function (c) {
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+    });
+  }
+  function normalizePhone(v) { return String(v || '').replace(/[\s\-().]/g, ''); }
+  function isValidPhone(v) {
+    return /^(\+62|62|0)8[1-9][0-9]{6,11}$/.test(normalizePhone(v));
+  }
+  function isValidGroupLink(v) {
+    return /^https?:\/\/(chat\.whatsapp\.com|wa\.me)\/[A-Za-z0-9_-]{8,}/i.test(String(v).trim());
+  }
+
+  let toastTimer = null;
+  function toast(msg) {
+    const el = $('#toast');
+    $('#toastText').textContent = msg;
+    el.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove('show'), 2800);
+  }
+
+  const THEME_KEY = 'riky-theme';
+  const mq = window.matchMedia('(prefers-color-scheme: dark)');
+
+  function getThemePref() {
+    try { return localStorage.getItem(THEME_KEY) || 'system'; } catch (e) { return 'system'; }
+  }
+  function applyTheme() {
+    const pref = getThemePref();
+    let actual = pref;
+    if (pref === 'system') actual = mq.matches ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', actual);
+    $$('#themeMenu button').forEach(b => {
+      b.classList.toggle('active', b.dataset.themeOpt === pref);
+    });
+  }
+  function setTheme(pref) {
+    try { localStorage.setItem(THEME_KEY, pref); } catch (e) {}
+    applyTheme();
+    const names = { system:'Default Sistem', light:'Terang (Light)', dark:'Gelap (Dark)' };
+    toast('Tema: ' + names[pref]);
+  }
+  applyTheme();
+  if (mq.addEventListener) {
+    mq.addEventListener('change', () => { if (getThemePref() === 'system') applyTheme(); });
+  } else if (mq.addListener) {
+    mq.addListener(() => { if (getThemePref() === 'system') applyTheme(); });
+  }
+
+  const themeBtn  = $('#themeBtn');
+  const themeMenu = $('#themeMenu');
+
+  themeBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    const open = themeMenu.classList.toggle('open');
+    themeBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  themeMenu.addEventListener('click', function (e) {
+    const btn = e.target.closest('[data-theme-opt]');
+    if (!btn) return;
+    setTheme(btn.dataset.themeOpt);
+    themeMenu.classList.remove('open');
+    themeBtn.setAttribute('aria-expanded', 'false');
+  });
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.theme-wrap')) {
+      themeMenu.classList.remove('open');
+      themeBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  const sidebar = $('#sidebar');
+  const overlay = $('#overlay');
+  const burgerBtn = $('#burgerBtn');
+
+  function openSidebar() {
+    sidebar.classList.add('open');
+    overlay.classList.add('show');
+    sidebar.setAttribute('aria-hidden', 'false');
+    burgerBtn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeSidebar() {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('show');
+    sidebar.setAttribute('aria-hidden', 'true');
+    burgerBtn.setAttribute('aria-expanded', 'false');
+    if (!document.querySelector('.modal.show')) document.body.style.overflow = '';
+  }
+  burgerBtn.addEventListener('click', openSidebar);
+  $('#sideClose').addEventListener('click', closeSidebar);
+  overlay.addEventListener('click', closeSidebar);
+
+  function createCarousel(opts) {
+    const track    = opts.track;
+    const viewport = opts.viewport;
+    const count    = opts.count;
+    const loop     = !!opts.loop;
+    const onChange = opts.onChange || function () {};
+
+    let index = 0;
+    let autoMs = 0;
+    let timer = null;
+    let paused = false;
+
+    let active = false, decided = false, startX = 0, startY = 0, dx = 0;
+
+    function render(anim) {
+      track.style.transition = anim ? 'transform .6s cubic-bezier(.22,1,.36,1)' : 'none';
+      track.style.transform = 'translateX(' + (-index * 100) + '%)';
+    }
+    function set(i, anim) {
+      const n = count();
+      if (n <= 0) return;
+      if (loop) index = ((i % n) + n) % n;
+      else index = Math.max(0, Math.min(n - 1, i));
+      render(anim !== false);
+      onChange(index);
+    }
+    function next() { set(index + 1); }
+    function prev() { set(index - 1); }
+
+    function startAuto(ms) {
+      autoMs = ms;
+      if (timer) clearInterval(timer);
+      if (ms > 0) timer = setInterval(function () { if (!paused) next(); }, ms);
+    }
+    function stopAuto() { if (timer) { clearInterval(timer); timer = null; } }
+    function resetAuto() { if (autoMs > 0) startAuto(autoMs); }
+
+    viewport.addEventListener('pointerdown', function (e) {
+      if (e.pointerType === 'mouse' && e.button !== 0) return;
+      if (e.target.closest('button, a, input, textarea, select, summary')) return;
+      active = true; decided = false;
+      startX = e.clientX; startY = e.clientY; dx = 0;
+      paused = true;
+    });
+
+    viewport.addEventListener('pointermove', function (e) {
+      if (!active) return;
+      dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+      if (!decided) {
+        if (Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy)) {
+          decided = true;
+          try { viewport.setPointerCapture(e.pointerId); } catch (err) {}
+        } else if (Math.abs(dy) > 12) {
+          active = false; paused = false;
+          return;
+        } else { return; }
+      }
+      if (e.cancelable) e.preventDefault();
+      track.style.transition = 'none';
+      track.style.transform = 'translateX(calc(' + (-index * 100) + '% + ' + dx + 'px))';
+    }, { passive: false });
+
+    function endDrag() {
+      if (!active) return;
+      const wasDrag = decided;
+      active = false; decided = false; paused = false;
+      if (wasDrag) {
+        const threshold = Math.max(38, viewport.clientWidth * 0.13);
+        if (dx < -threshold) set(index + 1);
+        else if (dx > threshold) set(index - 1);
+        else render(true);
+      }
+      dx = 0;
+      resetAuto();
+    }
+    viewport.addEventListener('pointerup', endDrag);
+    viewport.addEventListener('pointercancel', endDrag);
+
+    render(false);
+    onChange(index);
+
+    return {
+      set: set, next: next, prev: prev,
+      startAuto: startAuto, stopAuto: stopAuto, resetAuto: resetAuto,
+      get index() { return index; }
+    };
+  }
+
+  const heroTrack = $('#heroTrack');
+  const heroDots  = $('#heroDots');
+  const heroCount = heroTrack.children.length;
+
+  $('#heroBg').style.backgroundImage =
+    'url("https://i.ibb.co.com/q3ZPjkP8/file-00000000b60c8207a85013ec00617b2d.png")';
+
+  function updateHeroHeight(idx) {
+    const slider = document.getElementById('heroSlider');
+    if (!slider) return;
+    if (typeof idx !== 'number') {
+      idx = (heroCarousel && typeof heroCarousel.index === 'number') ? heroCarousel.index : 0;
+    }
+    const slide = heroTrack.children[idx];
+    if (!slide) return;
+    const img = slide.querySelector('img');
+    if (!img) return;
+
+    function apply() {
+      if (!img.naturalWidth || !img.naturalHeight) return;
+      const slideEl = img.parentElement;
+      const cs = getComputedStyle(slideEl);
+      const padH = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
+      const padV = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+      const availWidth = slider.clientWidth - padH;
+      if (availWidth <= 0) return;
+      const ratio = img.naturalHeight / img.naturalWidth;
+      let contentH = availWidth * ratio;
+      const maxContentH = Math.min(500, window.innerHeight * 0.58);
+      if (contentH > maxContentH) contentH = maxContentH;
+      slider.style.height = (contentH + padV) + 'px';
+    }
+    if (img.complete && img.naturalWidth) apply();
+    else img.addEventListener('load', apply, { once: true });
+    setTimeout(apply, 800);
+  }
+
+  for (let i = 0; i < heroCount; i++) {
+    const b = document.createElement('button');
+    b.setAttribute('aria-label', 'Slide ' + (i + 1));
+    b.addEventListener('click', function () { heroCarousel.set(i); heroCarousel.resetAuto(); });
+    heroDots.appendChild(b);
+  }
+
+  const heroCarousel = createCarousel({
+    track: heroTrack,
+    viewport: $('#heroSlider'),
+    count: function () { return heroCount; },
+    loop: true,
+    onChange: function (i) {
+      $$('#heroDots button').forEach(function (b, k) { b.classList.toggle('active', k === i); });
+      updateHeroHeight(i);
+    }
+  });
+  heroCarousel.startAuto(4800);
+  window.addEventListener('resize', function () { updateHeroHeight(); });
+  window.addEventListener('load', function () { updateHeroHeight(); });
+
+  const catTrack = $('#catTrack');
+  const catDots  = $('#catDots');
+
+  function cardHTML(p) {
+    return '' +
+      '<article class="product-card">' +
+        '<div class="pc-img">' +
+          '<img src="' + PRODUCT_IMG + '" alt="' + esc(p.name) + '" loading="lazy">' +
+          '<span class="pc-tag">' + esc(p.dur) + '</span>' +
+        '</div>' +
+        '<div class="pc-body">' +
+          '<h4 class="pc-name">' + esc(p.name) + '</h4>' +
+          '<p class="pc-desc">' + esc(p.desc) + '</p>' +
+          '<div class="pc-price">' + rupiah(p.price) + '</div>' +
+          '<div class="pc-dur">Durasi: <b>' + esc(p.dur) + ' (' + p.days + ' Hari)</b></div>' +
+          '<div class="pc-actions">' +
+            '<button class="btn btn-ghost" data-add="' + p.id + '">+ Keranjang</button>' +
+            '<button class="btn btn-primary" data-buy="' + p.id + '">Beli Sekarang</button>' +
+          '</div>' +
+        '</div>' +
+      '</article>';
+  }
+
+  catTrack.innerHTML = CATEGORIES.map(function (cat) {
+    return '' +
+      '<div class="cat-slide">' +
+        '<div class="cat-caption">' +
+          '<h3>' + esc(cat.title) + '</h3>' +
+          '<p>' + esc(cat.desc) + '</p>' +
+        '</div>' +
+        '<div class="product-grid">' + cat.items.map(cardHTML).join('') + '</div>' +
+      '</div>';
+  }).join('');
+
+  CATEGORIES.forEach(function (_, i) {
+    const b = document.createElement('button');
+    b.setAttribute('aria-label', 'Kategori ' + (i + 1));
+    b.addEventListener('click', function () { catCarousel.set(i); });
+    catDots.appendChild(b);
+  });
+
+  const catCarousel = createCarousel({
+    track: catTrack,
+    viewport: $('#catCarousel'),
+    count: function () { return CATEGORIES.length; },
+    loop: false,
+    onChange: function (i) {
+      $$('#catTabs .cat-tab').forEach(function (t, k) { t.classList.toggle('active', k === i); });
+      $$('#catDots button').forEach(function (d, k) { d.classList.toggle('active', k === i); });
+    }
+  });
+
+  $$('#catTabs .cat-tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      catCarousel.set(parseInt(tab.dataset.tab, 10));
+    });
+  });
+
+  const searchInput   = $('#searchInput');
+  const searchClear   = $('#searchClear');
+  const searchArea    = $('#searchArea');
+  const searchResults = $('#searchResults');
+  const searchInfo    = $('#searchInfo');
+  const catalogNormal = $('#catalogNormal');
+
+  let searchTimer = null;
+
+  function runSearch(raw) {
+    const q = String(raw || '').trim().toLowerCase();
+    if (!q) {
+      searchArea.hidden = true;
+      catalogNormal.hidden = false;
+      searchResults.innerHTML = '';
+      return;
+    }
+    catalogNormal.hidden = true;
+    searchArea.hidden = false;
+
+    const found = [];
+    CATEGORIES.forEach(function (cat) {
+      cat.items.forEach(function (p) {
+        if (p.name.toLowerCase().indexOf(q) !== -1 ||
+            p.dur.toLowerCase().indexOf(q) !== -1 ||
+            cat.title.toLowerCase().indexOf(q) !== -1) {
+          found.push(p);
+        }
+      });
+    });
+
+    searchInfo.textContent = found.length
+      ? 'Ditemukan ' + found.length + ' produk untuk "' + raw.trim() + '"'
+      : 'Tidak ada produk yang cocok untuk "' + raw.trim() + '"';
+
+    if (found.length) {
+      searchResults.innerHTML = found.map(cardHTML).join('');
+    } else {
+      searchResults.innerHTML =
+        '<div class="empty-state" style="grid-column:1/-1">' +
+          '<span class="big">🔍</span>' +
+          'Produk tidak ditemukan. Coba kata kunci lain seperti "premium" atau "user".' +
+        '</div>';
+    }
+  }
+
+  searchInput.addEventListener('input', function () {
+    searchClear.classList.toggle('show', searchInput.value.length > 0);
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(function () { runSearch(searchInput.value); }, 170);
+  });
+
+  searchClear.addEventListener('click', function () {
+    searchInput.value = '';
+    searchClear.classList.remove('show');
+    runSearch('');
+    searchInput.focus();
+  });
+
+  const CART_KEY = 'riky-cart';
+  let cart = [];
+
+  function loadCart() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(CART_KEY) || '[]');
+      if (Array.isArray(raw)) {
+        cart = raw
+          .filter(function (x) { return x && ALL[x.id]; })
+          .map(function (x) {
+            const p = ALL[x.id];
+            return {
+              id: p.id, name: p.name, dur: p.dur, days: p.days, price: p.price,
+              type: p.type, category: p.category, categoryLabel: p.categoryLabel,
+              qty: Math.max(1, Math.min(99, parseInt(x.qty, 10) || 1))
+            };
+          });
+      }
+    } catch (e) { cart = []; }
+  }
+  function saveCart() {
+    try {
+      localStorage.setItem(CART_KEY, JSON.stringify(cart.map(function (i) {
+        return { id: i.id, qty: i.qty };
+      })));
+    } catch (e) {}
+  }
+  function cartCount() { return cart.reduce(function (a, b) { return a + b.qty; }, 0); }
+  function cartTotal() { return cart.reduce(function (a, b) { return a + b.qty * b.price; }, 0); }
+
+  function updateBadge() {
+    const badge = $('#cartBadge');
+    const n = cartCount();
+    badge.textContent = n > 99 ? '99+' : n;
+    badge.classList.toggle('show', n > 0);
+  }
+
+  function addToCart(id, qty) {
+    const p = ALL[id];
+    if (!p) return;
+    qty = qty || 1;
+    const found = cart.filter(function (i) { return i.id === id; })[0];
+    if (found) { found.qty = Math.min(99, found.qty + qty); }
+    else {
+      cart.push({
+        id: p.id, name: p.name, dur: p.dur, days: p.days, price: p.price,
+        type: p.type, category: p.category, categoryLabel: p.categoryLabel, qty: qty
+      });
+    }
+    saveCart(); updateBadge(); renderCart();
+    toast(p.name + ' ditambahkan ke keranjang');
+  }
+
+  function renderCart() {
+    const body = $('#cartBody');
+    const footer = $('#cartFooter');
+    if (!cart.length) {
+      body.innerHTML =
+        '<div class="empty">' +
+          '<span class="big">🛒</span>' +
+          'Keranjang Anda masih kosong.<br>Yuk pilih produk favorit Anda!' +
+        '</div>';
+      footer.style.display = 'none';
+      return;
+    }
+    body.innerHTML = cart.map(function (it, i) {
+      return '' +
+        '<div class="cart-item">' +
+          '<img src="' + PRODUCT_IMG + '" alt="">' +
+          '<div class="ci-main">' +
+            '<div class="ci-name">' + esc(it.name) + '</div>' +
+            '<div class="ci-meta">' + esc(it.categoryLabel) + ' · ' + esc(it.dur) + ' (' + it.days + ' Hari)</div>' +
+            '<div class="ci-bottom">' +
+              '<div class="qty">' +
+                '<button data-qty="-1" data-i="' + i + '" aria-label="Kurangi">−</button>' +
+                '<span>' + it.qty + '</span>' +
+                '<button data-qty="1" data-i="' + i + '" aria-label="Tambah">+</button>' +
+              '</div>' +
+              '<div class="ci-price">' + rupiah(it.price * it.qty) + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<button class="ci-del" data-del="' + i + '" aria-label="Hapus">✕</button>' +
+        '</div>';
+    }).join('');
+    footer.style.display = 'block';
+    $('#cartTotal').textContent = rupiah(cartTotal());
+  }
+
+  $('#cartBody').addEventListener('click', function (e) {
+    const qtyBtn = e.target.closest('[data-qty]');
+    if (qtyBtn) {
+      const i = parseInt(qtyBtn.dataset.i, 10);
+      const d = parseInt(qtyBtn.dataset.qty, 10);
+      if (cart[i]) {
+        cart[i].qty += d;
+        if (cart[i].qty < 1) cart.splice(i, 1);
+        if (cart[i]) cart[i].qty = Math.min(99, cart[i].qty);
+        saveCart(); updateBadge(); renderCart();
+      }
+      return;
+    }
+    const delBtn = e.target.closest('[data-del]');
+    if (delBtn) {
+      const i = parseInt(delBtn.dataset.del, 10);
+      if (cart[i]) {
+        toast(cart[i].name + ' dihapus');
+        cart.splice(i, 1);
+        saveCart(); updateBadge(); renderCart();
+      }
+    }
+  });
+
+  const cartModal     = $('#cartModal');
+  const checkoutModal = $('#checkoutModal');
+
+  function openModal(el) {
+    el.classList.add('show');
+    el.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModals() {
+    if (paymentTimer) clearTimeout(paymentTimer);
+    [cartModal, checkoutModal].forEach(function (m) {
+      m.classList.remove('show');
+      m.setAttribute('aria-hidden', 'true');
+    });
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('[data-close-modal]')) closeModals();
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      closeModals();
+      closeSidebar();
+      themeMenu.classList.remove('open');
+    }
+  });
+
+  $('#cartBtn').addEventListener('click', function () {
+    renderCart();
+    openModal(cartModal);
+  });
+
+  $('#checkoutBtn').addEventListener('click', function () {
+    if (!cart.length) { toast('Keranjang masih kosong'); return; }
+    const items = cart.map(function (i) { return Object.assign({}, i); });
+    closeModals();
+    setTimeout(function () { openCheckout(items); }, 180);
+  });
+
+  let currentItems = [];
+  let pendingOrder = null;
+  let paymentTimer = null;
+
+  function openCheckout(items) {
+    currentItems = items.map(function (i) { return Object.assign({}, i); });
+    renderCheckout();
+    openModal(checkoutModal);
+    $('#checkoutModal .modal-panel').scrollTop = 0;
+  }
+
+  function renderCheckout() {
+    const items = currentItems;
+    const total = items.reduce(function (a, b) { return a + b.price * b.qty; }, 0);
+    const hasGroup = items.some(function (i) { return i.type === 'group'; });
+    const hasUser  = items.some(function (i) { return i.type === 'user'; });
+
+    let html = '';
+
+    html += '<div class="modal-head">' +
+              '<h3>Formulir Pemesanan</h3>' +
+              '<button class="icon-btn" data-close-modal aria-label="Tutup">' +
+                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>' +
+              '</button>' +
+            '</div>';
+
+    html += '<div class="order-summary">';
+    items.forEach(function (it) {
+      html += '<div class="os-row">' +
+                '<span>' + esc(it.name) + ' <b>×' + it.qty + '</b></span>' +
+                '<span>' + rupiah(it.price * it.qty) + '</span>' +
+              '</div>';
+    });
+    html += '<div class="os-total"><span>Total Pembayaran</span><b>' + rupiah(total) + '</b></div>';
+    html += '</div>';
+
+    html += '<form id="checkoutForm" novalidate>';
+
+    html += '<div class="field">' +
+              '<label for="coName">Nama Pembeli <span class="req">*</span></label>' +
+              '<input class="input" id="coName" type="text" placeholder="Contoh: Riky Pratama" autocomplete="name">' +
+              '<div class="err" id="err-coName"></div>' +
+            '</div>';
+
+    html += '<div class="field">' +
+              '<label for="coPhone">Nomor WhatsApp Anda <span class="req">*</span></label>' +
+              '<input class="input" id="coPhone" type="tel" placeholder="628xxxxxxxxxx" autocomplete="tel" inputmode="tel">' +
+              '<div class="err" id="err-coPhone"></div>' +
+            '</div>';
+
+    if (hasGroup) {
+      html += '<details class="info-box">' +
+                '<summary>CARA MENDAPATKAN LINK GRUP WHATSAPP</summary>' +
+                '<ol>' +
+                  '<li>Buka aplikasi WhatsApp.</li>' +
+                  '<li>Masuk ke grup yang ingin dipasangi bot.</li>' +
+                  '<li>Klik nama grup di bagian atas.</li>' +
+                  '<li>Cari menu "Undang via Tautan".</li>' +
+                  '<li>Salin tautan grup.</li>' +
+                  '<li>Tempelkan tautan tersebut ke kolom yang tersedia.</li>' +
+                '</ol>' +
+              '</details>';
+    }
+
+    if (hasUser) {
+      html += '<details class="info-box">' +
+                '<summary>CARA MEMASUKKAN NOMOR</summary>' +
+                '<ol>' +
+                  '<li>Masukkan nomor WhatsApp yang ingin dipremiumkan.</li>' +
+                  '<li>Gunakan kode negara Indonesia (+62).</li>' +
+                  '<li>Pastikan nomor benar dan masih aktif.</li>' +
+                  '<li>Periksa kembali nomor sebelum mengirim pesanan.</li>' +
+                '</ol>' +
+              '</details>';
+    }
+
+    items.forEach(function (it, i) {
+      if (it.type === 'group') {
+        html += '<div class="field">' +
+                  '<label for="grp-' + i + '">Link Grup WhatsApp <span class="req">*</span> — ' + esc(it.name) + '</label>' +
+                  '<input class="input" id="grp-' + i + '" type="url" placeholder="https://chat.whatsapp.com/XXXXXXXXXXXX" autocomplete="off">' +
+                  '<div class="err" id="err-grp-' + i + '"></div>' +
+                '</div>';
+      } else {
+        html += '<div class="field">' +
+                  '<label for="usr-' + i + '">Nomor WhatsApp Premium <span class="req">*</span> — ' + esc(it.name) + '</label>' +
+                  '<input class="input" id="usr-' + i + '" type="tel" placeholder="628xxxxxxxxxx" autocomplete="off" inputmode="tel">' +
+                  '<div class="err" id="err-usr-' + i + '"></div>' +
+                '</div>';
+      }
+    });
+
+    html += '<div class="field">' +
+              '<label for="coNote">CATATAN UNTUK OWNER</label>' +
+              '<textarea class="input" id="coNote" rows="3" placeholder="Tulis pesan tambahan, permintaan khusus, atau informasi lain…"></textarea>' +
+            '</div>';
+
+    html += '<button type="submit" class="btn btn-primary btn-block" style="margin-top:6px">KIRIM PESANAN</button>';
+
+    html += '<p style="font-size:10.5px;color:var(--dim);text-align:center;margin:12px 0 0;line-height:1.6">' +
+              'Pesanan akan diteruskan ke Owner. Pembayaran hanya sah setelah bukti transfer diperiksa dan dikonfirmasi owner.' +
+            '</p>';
+
+    html += '</form>';
+
+    $('#checkoutContent').innerHTML = html;
+    $('#checkoutForm').addEventListener('submit', handleCheckoutSubmit);
+  }
+
+  function setErr(el, msg) {
+    if (!el) return;
+    el.classList.add('invalid');
+    const e = document.getElementById('err-' + el.id);
+    if (e) { e.textContent = msg; e.classList.add('show'); }
+  }
+  function clearErr(el) {
+    if (!el) return;
+    el.classList.remove('invalid');
+    const e = document.getElementById('err-' + el.id);
+    if (e) { e.textContent = ''; e.classList.remove('show'); }
+  }
+
+  function handleCheckoutSubmit(e) {
+    e.preventDefault();
+
+    const nameEl  = $('#coName');
+    const phoneEl = $('#coPhone');
+    const noteEl  = $('#coNote');
+
+    let ok = true;
+    let firstInvalid = null;
+
+    const name = nameEl.value.trim();
+    if (name.length < 2) {
+      setErr(nameEl, 'Nama pembeli wajib diisi (minimal 2 karakter).');
+      ok = false; firstInvalid = firstInvalid || nameEl;
+    } else { clearErr(nameEl); }
+
+    const phoneRaw = phoneEl.value.trim();
+    const phone = normalizePhone(phoneRaw);
+    if (!phoneRaw) {
+      setErr(phoneEl, 'Nomor WhatsApp wajib diisi.');
+      ok = false; firstInvalid = firstInvalid || phoneEl;
+    } else if (!isValidPhone(phone)) {
+      setErr(phoneEl, 'Format nomor tidak valid. Contoh: 6289507390286.');
+      ok = false; firstInvalid = firstInvalid || phoneEl;
+    } else { clearErr(phoneEl); }
+
+    const details = [];
+    currentItems.forEach(function (it, i) {
+      if (it.type === 'group') {
+        const el = document.getElementById('grp-' + i);
+        const val = el.value.trim();
+        if (!val) {
+          setErr(el, 'Link grup WhatsApp wajib diisi.');
+          ok = false; firstInvalid = firstInvalid || el;
+        } else if (!isValidGroupLink(val)) {
+          setErr(el, 'Format link tidak valid. Gunakan link undangan seperti https://chat.whatsapp.com/XXXXXXXXXXXX');
+          ok = false; firstInvalid = firstInvalid || el;
+        } else { clearErr(el); }
+        details.push({ item: it, group: val });
+      } else {
+        const el = document.getElementById('usr-' + i);
+        const val = el.value.trim();
+        const nv = normalizePhone(val);
+        if (!val) {
+          setErr(el, 'Nomor WhatsApp wajib diisi.');
+          ok = false; firstInvalid = firstInvalid || el;
+        } else if (!isValidPhone(nv)) {
+          setErr(el, 'Nomor tidak valid. Gunakan kode negara Indonesia, contoh: 6289507390286.');
+          ok = false; firstInvalid = firstInvalid || el;
+        } else { clearErr(el); }
+        details.push({ item: it, user: nv });
+      }
+    });
+
+    if (!ok) {
+      if (firstInvalid) {
+        firstInvalid.focus({ preventScroll: false });
+        try { firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (err) {}
+      }
+      toast('Periksa kembali data pesanan Anda');
+      return;
+    }
+
+    const total = currentItems.reduce(function (a, b) { return a + b.price * b.qty; }, 0);
+    const orderData = {
+      name: name,
+      phone: phone,
+      details: details,
+      note: noteEl ? noteEl.value.trim() : '',
+      total: total
+    };
+
+    pendingOrder = {
+      data: orderData,
+      message: buildMessage(orderData)
+    };
+
+    renderPreparingPayment();
+    if (paymentTimer) clearTimeout(paymentTimer);
+    paymentTimer = setTimeout(function () {
+      renderPaymentPage();
+    }, 3500);
+  }
+
+  function renderPreparingPayment() {
+    $('#checkoutContent').innerHTML =
+      '<div class="preparing-screen">' +
+        '<div class="preparing-orbit"><span>₿</span></div>' +
+        '<h3>Mohon Tunggu, QRIS Sedang Disiapkan<span class="preparing-dots"></span></h3>' +
+        '<p>Pesanan Anda sedang diproses.<br>Halaman pembayaran akan segera ditampilkan.</p>' +
+      '</div>';
+    $('#checkoutModal .modal-panel').scrollTop = 0;
+  }
+
+  /* ============ PEMBAYARAN QRIS + KIRIM BUKTI KE TELEGRAM ============ */
+  let proofFile = null;
+
+  function renderPaymentPage() {
+    if (!pendingOrder) return;
+    const total = pendingOrder.data.total;
+    $('#checkoutContent').innerHTML =
+      '<div class="payment-screen">' +
+        '<div class="modal-head">' +
+          '<h3>Pembayaran QRIS</h3>' +
+          '<button class="icon-btn" data-close-modal aria-label="Tutup">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>' +
+          '</button>' +
+        '</div>' +
+        '<div class="pay-brand">' +
+          '<div class="pay-mark">R</div>' +
+          '<h3>RIKY STORE</h3>' +
+          '<p>Secure checkout · Pembayaran QRIS</p>' +
+        '</div>' +
+        '<div class="pay-total-card"><span>Total yang harus dibayar</span><strong>' + rupiah(total) + '</strong></div>' +
+        '<div class="qris-card">' +
+          '<img src="https://i.ibb.co.com/r2MPC8yP/file-0000000033c48207af99132af113c79b.png" alt="Kode QRIS Riky Store" loading="eager">' +
+          '<div class="qris-label">✦ SCAN QRIS UNTUK MEMBAYAR ✦</div>' +
+          '<p class="qris-caption">Arahkan kamera aplikasi pembayaran ke kode QR di atas.</p>' +
+        '</div>' +
+        '<div class="pay-copy-row"><div><span>Nominal pembayaran</span><br><strong>' + rupiah(total) + '</strong></div><button type="button" id="copyPayTotal">SALIN NOMINAL</button></div>' +
+        '<div class="pay-instructions">' +
+          '<h4>📲 Panduan pembayaran</h4>' +
+          '<ol>' +
+            '<li>Buka aplikasi e-wallet atau mobile banking yang mendukung QRIS.</li>' +
+            '<li>Pilih menu <b>Scan QRIS</b>, lalu pindai kode QR di atas.</li>' +
+            '<li>Jika nominal belum terisi otomatis, masukkan nominal tepat <b>' + rupiah(total) + '</b>.</li>' +
+            '<li>Periksa nama merchant dan nominal sebelum menekan tombol bayar.</li>' +
+            '<li>Simpan <b>screenshot / foto bukti transfer</b> yang berhasil.</li>' +
+            '<li>Unggah foto bukti transfer di kolom bawah, lalu tekan <b>Kirim Pesanan</b>.</li>' +
+          '</ol>' +
+        '</div>' +
+        '<div class="pay-warning">⚠️ <b>Perhatian:</b> QRIS di atas adalah kode pembayaran toko. Pembayaran baru dianggap sah setelah Owner memeriksa foto bukti transfer yang Anda kirim dan memberikan konfirmasi.</div>' +
+
+        '<div class="pay-upload" id="payUpload">' +
+          '<input type="file" id="proofInput" accept="image/*">' +
+          '<div class="pu-icon">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v13"/></svg>' +
+          '</div>' +
+          '<p class="pu-title">UPLOAD BUKTI PEMBAYARAN <span style="color:var(--danger)">*</span></p>' +
+          '<p class="pu-sub">Klik untuk memilih foto / screenshot bukti transfer QRIS.<br>Format JPG / PNG · Maksimal 10 MB.</p>' +
+          '<div class="pu-preview" id="puPreview">' +
+            '<img id="puImg" alt="Pratinjau bukti pembayaran">' +
+            '<p class="pu-filename" id="puName"></p>' +
+            '<button type="button" class="pu-remove" id="puRemove">✕ Hapus foto</button>' +
+          '</div>' +
+        '</div>' +
+
+        '<div class="pay-actions">' +
+          '<button type="button" class="btn btn-tg-send btn-block" id="sendToTelegram" disabled>KIRIM PESANAN</button>' +
+          '<button type="button" class="btn pay-back btn-block" id="backToCheckout">KEMBALI / UBAH PESANAN</button>' +
+        '</div>' +
+        '<div class="send-status" id="sendStatus"></div>' +
+      '</div>';
+
+    $('#checkoutModal .modal-panel').scrollTop = 0;
+    bindPaymentEvents();
+  }
+
+  function bindPaymentEvents() {
+    const upBox   = $('#payUpload');
+    const upInput = $('#proofInput');
+    const sendBtn = $('#sendToTelegram');
+    const status  = $('#sendStatus');
+
+    $('#copyPayTotal').addEventListener('click', copyPaymentTotal);
+    $('#backToCheckout').addEventListener('click', backToCheckoutForm);
+
+    upBox.addEventListener('click', function (e) {
+      if (e.target.closest('#puRemove')) return;
+      upInput.click();
+    });
+
+    upInput.addEventListener('change', function () {
+      const f = upInput.files && upInput.files[0];
+      if (!f) return;
+      if (!/^image\//i.test(f.type)) { toast('File harus berupa gambar'); upInput.value = ''; return; }
+      if (f.size > 10 * 1024 * 1024) { toast('Ukuran foto maksimal 10 MB'); upInput.value = ''; return; }
+
+      proofFile = f;
+      $('#puImg').src = URL.createObjectURL(f);
+      $('#puName').textContent = f.name + ' · ' + (f.size / 1048576).toFixed(2) + ' MB';
+      upBox.classList.add('has-file');
+      sendBtn.disabled = false;
+      status.className = 'send-status';
+      status.textContent = '';
+    });
+
+    $('#puRemove').addEventListener('click', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      proofFile = null;
+      upInput.value = '';
+      upBox.classList.remove('has-file');
+      sendBtn.disabled = true;
+      status.className = 'send-status';
+      status.textContent = '';
+    });
+
+    sendBtn.addEventListener('click', function () {
+      if (!proofFile) { toast('Upload bukti pembayaran terlebih dahulu'); return; }
+      if (!pendingOrder) { toast('Data pesanan tidak ditemukan, silakan ulangi'); return; }
+
+      sendBtn.disabled = true;
+      sendBtn.innerHTML = '<span class="spinner"></span>MENGIRIM…';
+      status.className = 'send-status show';
+      status.textContent = 'Mengirim laporan pesanan & foto bukti pembayaran ke Telegram Owner…';
+
+      sendOrderToTelegram(proofFile).then(function () {
+        cart = [];
+        saveCart();
+        updateBadge();
+        renderCart();
+        pendingOrder = null;
+        proofFile = null;
+        renderSuccessScreen();
+      }).catch(function (err) {
+        status.className = 'send-status show err';
+        status.textContent = 'Gagal mengirim: ' + ((err && err.message) ? err.message : 'kesalahan jaringan') + '. Periksa koneksi lalu coba lagi.';
+        sendBtn.disabled = false;
+        sendBtn.textContent = 'KIRIM ULANG PESANAN';
+      });
+    });
+  }
+
+  function truncateText(s, max) {
+    if (s.length <= max) return s;
+    let out = s.slice(0, max - 1);
+    const last = out.charCodeAt(out.length - 1);
+    if (last >= 0xD800 && last <= 0xDBFF) out = out.slice(0, -1);
+    return out + '…';
+  }
+
+  function buildCaption(o) {
+    let c = '🧾 BUKTI PEMBAYARAN — RIKY STORE\n\n';
+    c += 'Nama: ' + o.name + '\n';
+    c += 'Nomor WhatsApp: ' + o.phone + '\n';
+    c += 'Total: ' + rupiah(o.total) + '\n\n';
+    c += 'Produk:\n';
+    o.details.forEach(function (d) {
+      c += '• ' + d.item.name + ' ×' + d.item.qty + ' — ' + rupiah(d.item.price * d.item.qty) + '\n';
+    });
+    c += '\nDikirim otomatis dari website RIKY STORE.';
+    return truncateText(c, 1024);
+  }
+
+  function tgApi(method, formData) {
+    return fetch(TG_API + method, { method: 'POST', body: formData })
+      .then(function (res) { return res.json(); })
+      .then(function (json) {
+        if (!json || !json.ok) {
+          throw new Error((json && json.description) ? json.description : 'Telegram menolak permintaan');
+        }
+        return json.result;
+      });
+  }
+
+  function sendOrderToTelegram(file) {
+    const data = pendingOrder.data;
+
+    /* 1) Kirim FOTO bukti pembayaran + ringkasan sebagai caption */
+    const fdPhoto = new FormData();
+    fdPhoto.append('chat_id', TG_CHAT_ID);
+    fdPhoto.append('caption', buildCaption(data));
+    fdPhoto.append('photo', file, file.name || 'bukti-pembayaran.jpg');
+
+    return tgApi('sendPhoto', fdPhoto).then(function () {
+      /* 2) Kirim LAPORAN PESANAN lengkap */
+      const fdText = new FormData();
+      fdText.append('chat_id', TG_CHAT_ID);
+      fdText.append('text', truncateText(pendingOrder.message, 4096));
+      fdText.append('disable_web_page_preview', 'true');
+      return tgApi('sendMessage', fdText);
+    });
+  }
+
+  function renderSuccessScreen() {
+    $('#checkoutContent').innerHTML =
+      '<div class="success-screen">' +
+        '<div class="success-badge">✓</div>' +
+        '<h3>Pesanan Berhasil Dikirim!</h3>' +
+        '<p>Laporan pesanan dan foto bukti pembayaran Anda sudah otomatis terkirim ke Telegram Owner.</p>' +
+        '<div class="success-ref">' +
+          'Owner akan memeriksa bukti transfer dan mengonfirmasi pesanan Anda.<br>' +
+          'Simpan bukti pembayaran sampai pesanan <b>dikonfirmasi</b>.' +
+        '</div>' +
+        '<button type="button" class="btn btn-primary btn-block" id="successClose">SELESAI</button>' +
+      '</div>';
+    $('#checkoutModal .modal-panel').scrollTop = 0;
+    $('#successClose').addEventListener('click', closeModals);
+  }
+
+  function copyPaymentTotal() {
+    if (!pendingOrder) return;
+    const value = String(pendingOrder.data.total);
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(value).then(function () {
+        toast('Nominal berhasil disalin');
+      }).catch(function () { toast('Nominal: ' + rupiah(value)); });
+    } else {
+      const helper = document.createElement('textarea');
+      helper.value = value;
+      helper.style.position = 'fixed';
+      helper.style.opacity = '0';
+      document.body.appendChild(helper);
+      helper.select();
+      try { document.execCommand('copy'); toast('Nominal berhasil disalin'); }
+      catch (e) { toast('Nominal: ' + rupiah(value)); }
+      helper.remove();
+    }
+  }
+
+  function backToCheckoutForm() {
+    if (!pendingOrder) return;
+    if (paymentTimer) clearTimeout(paymentTimer);
+    const data = pendingOrder.data;
+    renderCheckout();
+    $('#coName').value = data.name;
+    $('#coPhone').value = data.phone;
+    $('#coNote').value = data.note || '';
+    data.details.forEach(function (detail, i) {
+      const field = detail.item.type === 'group'
+        ? document.getElementById('grp-' + i)
+        : document.getElementById('usr-' + i);
+      if (field) field.value = detail.item.type === 'group' ? detail.group : detail.user;
+    });
+    pendingOrder = null;
+    proofFile = null;
+    $('#checkoutModal .modal-panel').scrollTop = 0;
+  }
+
+  function buildMessage(o) {
+    const L = '━━━━━━━━━━━━━━━━━━';
+    let m = '';
+    m += L + '\n';
+    m += '🛍️ PESANAN RIKY STORE\n';
+    m += L + '\n\n';
+    m += '👤 DATA PEMBELI\n\n';
+    m += 'Nama: ' + o.name + '\n';
+    m += 'Nomor WhatsApp: ' + o.phone + '\n\n';
+    m += '📦 DETAIL PESANAN\n';
+    o.details.forEach(function (d) {
+      const it = d.item;
+      m += '\nProduk: ' + it.name + '\n';
+      m += 'Kategori: ' + it.category + '\n';
+      m += 'Durasi: ' + it.dur + ' (' + it.days + ' Hari)\n';
+      m += 'Harga: ' + rupiah(it.price) + '\n';
+      m += 'Jumlah: ' + it.qty + '\n';
+      if (d.group) { m += '\n🔗 LINK GRUP:\n' + d.group + '\n'; }
+      if (d.user)  { m += '\n📱 NOMOR USER PREMIUM:\n' + d.user + '\n'; }
+    });
+    if (o.note) { m += '\n📝 CATATAN UNTUK OWNER:\n' + o.note + '\n'; }
+    m += '\n💰 TOTAL PEMBAYARAN:\n' + rupiah(o.total) + '\n\n';
+    m += '💳 STATUS PEMBAYARAN:\n';
+    m += 'Metode: QRIS\n';
+    m += 'Bukti transfer: TERLAMPIR (foto dikirim pada chat ini)\n\n';
+    m += L + '\n';
+    m += 'Pesanan dikirim otomatis dari website RIKY STORE.\n';
+    m += 'Mohon owner memeriksa foto bukti pembayaran di atas\n';
+    m += 'dan mengonfirmasi pesanan ini.\n\n';
+    m += 'Terima kasih telah berbelanja! ❤️\n';
+    m += L;
+    return m;
+  }
+
+  document.addEventListener('click', function (e) {
+    const addBtn = e.target.closest('[data-add]');
+    if (addBtn) { addToCart(addBtn.dataset.add, 1); return; }
+    const buyBtn = e.target.closest('[data-buy]');
+    if (buyBtn) {
+      const p = ALL[buyBtn.dataset.buy];
+      if (!p) return;
+      openCheckout([{
+        id: p.id, name: p.name, dur: p.dur, days: p.days, price: p.price,
+        type: p.type, category: p.category, categoryLabel: p.categoryLabel, qty: 1
+      }]);
+    }
+  });
+
+  const tstTrack = $('#tstTrack');
+  const tstDots  = $('#tstDots');
+
+  tstTrack.innerHTML = TESTIMONIALS.map(function (t) {
+    return '' +
+      '<div class="tst-slide">' +
+        '<div class="tst-card">' +
+          '<div class="tst-ava">' + esc(t.initials) + '</div>' +
+          '<div class="tst-stars">★★★★★</div>' +
+          '<p class="tst-text">"' + esc(t.text) + '"</p>' +
+          '<div class="tst-name">' + esc(t.name) + '</div>' +
+          '<div class="tst-role">' + esc(t.role) + '</div>' +
+        '</div>' +
+      '</div>';
+  }).join('');
+
+  TESTIMONIALS.forEach(function (_, i) {
+    const b = document.createElement('button');
+    b.setAttribute('aria-label', 'Testimoni ' + (i + 1));
+    b.addEventListener('click', function () { tstCarousel.set(i); tstCarousel.resetAuto(); });
+    tstDots.appendChild(b);
+  });
+
+  const tstCarousel = createCarousel({
+    track: tstTrack,
+    viewport: $('#tstWrap'),
+    count: function () { return TESTIMONIALS.length; },
+    loop: false,
+    onChange: function (i) {
+      $$('#tstDots button').forEach(function (b, k) { b.classList.toggle('active', k === i); });
+    }
+  });
+  tstCarousel.startAuto(5200);
+
+  const faqList = $('#faqList');
+
+  faqList.innerHTML = FAQS.map(function (f, i) {
+    return '' +
+      '<div class="faq-item" data-faq="' + i + '">' +
+        '<button class="faq-q" type="button" aria-expanded="false">' +
+          '<span>' + esc(f.q) + '</span>' +
+          '<span class="faq-icon">+</span>' +
+        '</button>' +
+        '<div class="faq-a"><p>' + esc(f.a) + '</p></div>' +
+      '</div>';
+  }).join('');
+
+  faqList.addEventListener('click', function (e) {
+    const q = e.target.closest('.faq-q');
+    if (!q) return;
+    const item = q.parentElement;
+    const answer = item.querySelector('.faq-a');
+    const isOpen = item.classList.contains('open');
+    $$('.faq-item', faqList).forEach(function (el) {
+      el.classList.remove('open');
+      el.querySelector('.faq-a').style.maxHeight = '0px';
+      el.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
+    });
+    if (!isOpen) {
+      item.classList.add('open');
+      answer.style.maxHeight = answer.scrollHeight + 'px';
+      q.setAttribute('aria-expanded', 'true');
+    }
+  });
+
+  window.addEventListener('resize', function () {
+    $$('.faq-item.open .faq-a', faqList).forEach(function (a) {
+      a.style.maxHeight = a.scrollHeight + 'px';
+    });
+  });
+
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          en.target.classList.add('in');
+          io.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    $$('.reveal').forEach(function (el) { io.observe(el); });
+  } else {
+    $$('.reveal').forEach(function (el) { el.classList.add('in'); });
+  }
+
+  function init() {
+    loadCart();
+    updateBadge();
+    renderCart();
+    $('#year').textContent = new Date().getFullYear();
+    setTimeout(updateHeroHeight, 60);
+  }
+  init();
+
+  window.addEventListener('load', function () {
+    setTimeout(function () { $('#preloader').classList.add('hide'); }, 350);
+    setTimeout(updateHeroHeight, 100);
+  });
+  setTimeout(function () { $('#preloader').classList.add('hide'); }, 2600);
+
+})();
+</script>
+</body>
+</html>*
