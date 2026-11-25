@@ -9,6 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
   --blue:#2f8bff;
@@ -1006,14 +1007,14 @@ textarea.input{resize:vertical;min-height:78px;line-height:1.55}
 <script>
 (function () {
   'use strict';
+const OWNER_WA    = '6285695508479';
+const PRODUCT_IMG = 'https://i.ibb.co.com/1G7gk2gY/file-00000000ecdc82118a5e9f222594d94f.png';
 
-  const OWNER_WA    = '6285695508479';
-  const PRODUCT_IMG = 'https://i.ibb.co.com/1G7gk2gY/file-00000000ecdc82118a5e9f222594d94f.png';
 
-  /* ====== LAPORAN PESANAN → BOT TELEGRAM ====== */
-  const TG_BOT_TOKEN = '9039394974:AAHBfZAkYkcCH83sxaEPqBFh9vmPbMvYvsI';
-  const TG_CHAT_ID   = '8744341504';
-  const TG_API       = 'https://api.telegram.org/bot' + TG_BOT_TOKEN + '/';
+  /* ====== SUPABASE CONFIG ====== */
+const SUPABASE_URL      = 'https://pvtlcztbuljzogtuyoeo.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_wqNuj51I4--ee_Q3L71i-A_6pE1EcEA';
+const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   const CATEGORIES = [
     {
@@ -1756,7 +1757,6 @@ textarea.input{resize:vertical;min-height:78px;line-height:1.55}
     const e = document.getElementById('err-' + el.id);
     if (e) { e.textContent = ''; e.classList.remove('show'); }
   }
-
   function handleCheckoutSubmit(e) {
     e.preventDefault();
 
@@ -1783,8 +1783,8 @@ textarea.input{resize:vertical;min-height:78px;line-height:1.55}
       ok = false; firstInvalid = firstInvalid || phoneEl;
     } else { clearErr(phoneEl); }
 
-    const details = [];
-    currentItems.forEach(function (it, i) {
+    const itemsWithDetail = currentItems.map(function (it, i) {
+      const item = Object.assign({}, it);
       if (it.type === 'group') {
         const el = document.getElementById('grp-' + i);
         const val = el.value.trim();
@@ -1792,72 +1792,59 @@ textarea.input{resize:vertical;min-height:78px;line-height:1.55}
           setErr(el, 'Link grup WhatsApp wajib diisi.');
           ok = false; firstInvalid = firstInvalid || el;
         } else if (!isValidGroupLink(val)) {
-          setErr(el, 'Format link tidak valid. Gunakan link undangan seperti https://chat.whatsapp.com/XXXXXXXXXXXX');
+          setErr(el, 'Link grup tidak valid. Contoh: https://chat.whatsapp.com/XXXX');
           ok = false; firstInvalid = firstInvalid || el;
-        } else { clearErr(el); }
-        details.push({ item: it, group: val });
+        } else {
+          clearErr(el);
+          item.detail = val;
+        }
       } else {
         const el = document.getElementById('usr-' + i);
-        const val = el.value.trim();
-        const nv = normalizePhone(val);
+        const val = normalizePhone(el.value.trim());
         if (!val) {
-          setErr(el, 'Nomor WhatsApp wajib diisi.');
+          setErr(el, 'Nomor WhatsApp premium wajib diisi.');
           ok = false; firstInvalid = firstInvalid || el;
-        } else if (!isValidPhone(nv)) {
-          setErr(el, 'Nomor tidak valid. Gunakan kode negara Indonesia, contoh: 6285695508479.');
+        } else if (!isValidPhone(val)) {
+          setErr(el, 'Format nomor tidak valid. Contoh: 628xxxxxxxxxx.');
           ok = false; firstInvalid = firstInvalid || el;
-        } else { clearErr(el); }
-        details.push({ item: it, user: nv });
+        } else {
+          clearErr(el);
+          item.detail = val;
+        }
       }
+      return item;
     });
 
     if (!ok) {
-      if (firstInvalid) {
-        firstInvalid.focus({ preventScroll: false });
-        try { firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch (err) {}
-      }
-      toast('Periksa kembali data pesanan Anda');
+      if (firstInvalid) firstInvalid.focus();
+      toast('Periksa kembali data yang belum lengkap.');
       return;
     }
 
-    const total = currentItems.reduce(function (a, b) { return a + b.price * b.qty; }, 0);
-    const orderData = {
-      name: name,
-      phone: phone,
-      details: details,
-      note: noteEl ? noteEl.value.trim() : '',
-      total: total
-    };
-
     pendingOrder = {
-      data: orderData,
-      message: buildMessage(orderData)
+      nama: name,
+      wa: phone,
+      catatan: noteEl.value.trim(),
+      items: itemsWithDetail.map(function (it) {
+        return {
+          id: it.id,
+          name: it.name,
+          qty: it.qty,
+          price: it.price,
+          total: it.price * it.qty,
+          type: it.type,
+          detail: it.detail
+        };
+      }),
+      total: currentItems.reduce(function (a, b) { return a + b.price * b.qty; }, 0)
     };
 
-    renderPreparingPayment();
-    if (paymentTimer) clearTimeout(paymentTimer);
-    paymentTimer = setTimeout(function () {
-      renderPaymentPage();
-    }, 3500);
+    renderPaymentScreen();
   }
 
-  function renderPreparingPayment() {
-    $('#checkoutContent').innerHTML =
-      '<div class="preparing-screen">' +
-        '<div class="preparing-orbit"><span>₿</span></div>' +
-        '<h3>Mohon Tunggu, QRIS Sedang Disiapkan<span class="preparing-dots"></span></h3>' +
-        '<p>Pesanan Anda sedang diproses.<br>Halaman pembayaran akan segera ditampilkan.</p>' +
-      '</div>';
-    $('#checkoutModal .modal-panel').scrollTop = 0;
-  }
-
-  /* ============ PEMBAYARAN QRIS + KIRIM BUKTI KE TELEGRAM ============ */
-  let proofFile = null;
-
-  function renderPaymentPage() {
-    if (!pendingOrder) return;
-    const total = pendingOrder.data.total;
-    $('#checkoutContent').innerHTML =
+  function renderPaymentScreen() {
+    const order = pendingOrder;
+    const html =
       '<div class="payment-screen">' +
         '<div class="modal-head">' +
           '<h3>Pembayaran QRIS</h3>' +
@@ -1865,377 +1852,173 @@ textarea.input{resize:vertical;min-height:78px;line-height:1.55}
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>' +
           '</button>' +
         '</div>' +
+
         '<div class="pay-brand">' +
           '<div class="pay-mark">R</div>' +
           '<h3>RIKY STORE</h3>' +
-          '<p>Secure checkout · Pembayaran QRIS</p>' +
+          '<p>Scan QRIS untuk membayar</p>' +
         '</div>' +
-        '<div class="pay-total-card"><span>Total yang harus dibayar</span><strong>' + rupiah(total) + '</strong></div>' +
+
+        '<div class="pay-total-card">' +
+          '<span>Total Pembayaran</span>' +
+          '<strong>' + rupiah(order.total) + '</strong>' +
+        '</div>' +
+
         '<div class="qris-card">' +
-          '<img src="https://i.ibb.co.com/r2MPC8yP/file-0000000033c48207af99132af113c79b.png" alt="Kode QRIS Riky Store" loading="eager">' +
-          '<div class="qris-label">✦ SCAN QRIS UNTUK MEMBAYAR ✦</div>' +
-          '<p class="qris-caption">Arahkan kamera aplikasi pembayaran ke kode QR di atas.</p>' +
+          '<img src="URL_QRIS_ASLI_LU" alt="QRIS Riky Store">' +
+          '<div class="qris-label">QRIS RESMI</div>' +
         '</div>' +
-        '<div class="pay-copy-row"><div><span>Nominal pembayaran</span><br><strong>' + rupiah(total) + '</strong></div><button type="button" id="copyPayTotal">SALIN NOMINAL</button></div>' +
+
         '<div class="pay-instructions">' +
-          '<h4>📲 Panduan pembayaran</h4>' +
+          '<h4>Cara Pembayaran</h4>' +
           '<ol>' +
-            '<li>Buka aplikasi e-wallet atau mobile banking yang mendukung QRIS.</li>' +
-            '<li>Pilih menu <b>Scan QRIS</b>, lalu pindai kode QR di atas.</li>' +
-            '<li>Jika nominal belum terisi otomatis, masukkan nominal tepat <b>' + rupiah(total) + '</b>.</li>' +
-            '<li>Periksa nama merchant dan nominal sebelum menekan tombol bayar.</li>' +
-            '<li>Simpan <b>screenshot / foto bukti transfer</b> yang berhasil.</li>' +
-            '<li>Unggah foto bukti transfer di kolom bawah, lalu tekan <b>Kirim Pesanan</b>.</li>' +
+            '<li>Buka aplikasi bank / e-wallet (GoPay, OVO, DANA, dll).</li>' +
+            '<li>Pilih menu <b>Scan QRIS</b> lalu scan gambar di atas.</li>' +
+            '<li>Masukkan nominal <b>' + rupiah(order.total) + '</b>.</li>' +
+            '<li>Screenshot bukti transfer.</li>' +
+            '<li>Upload bukti di bawah, lalu klik <b>Kirim Pesanan</b>.</li>' +
           '</ol>' +
         '</div>' +
-        '<div class="pay-warning">⚠️ <b>Perhatian:</b> QRIS di atas adalah kode pembayaran toko. Pembayaran baru dianggap sah setelah Owner memeriksa foto bukti transfer yang Anda kirim dan memberikan konfirmasi.</div>' +
 
-        '<div class="pay-upload" id="payUpload">' +
-          '<input type="file" id="proofInput" accept="image/*">' +
+        '<label class="pay-upload" id="payUpload">' +
+          '<input type="file" id="payFile" accept="image/*">' +
           '<div class="pu-icon">' +
-            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v13"/></svg>' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg>' +
           '</div>' +
-          '<p class="pu-title">UPLOAD BUKTI PEMBAYARAN <span style="color:var(--danger)">*</span></p>' +
-          '<p class="pu-sub">Klik untuk memilih foto / screenshot bukti transfer QRIS.<br>Format JPG / PNG · Maksimal 10 MB.</p>' +
-          '<div class="pu-preview" id="puPreview">' +
-            '<img id="puImg" alt="Pratinjau bukti pembayaran">' +
+          '<p class="pu-title">Upload Bukti Pembayaran</p>' +
+          '<p class="pu-sub">Format JPG / PNG, maksimal 5 MB</p>' +
+          '<div class="pu-preview">' +
+            '<img id="puImg" alt="Preview bukti">' +
             '<p class="pu-filename" id="puName"></p>' +
-            '<button type="button" class="pu-remove" id="puRemove">✕ Hapus foto</button>' +
+            '<button type="button" class="pu-remove" id="puRemove">Ganti Foto</button>' +
           '</div>' +
-        '</div>' +
+        '</label>' +
+
+        '<div class="pay-warning">Pesanan diproses setelah bukti pembayaran diverifikasi owner. Pastikan nominal sesuai dan bukti terlihat jelas.</div>' +
 
         '<div class="pay-actions">' +
-          '<button type="button" class="btn btn-tg-send btn-block" id="sendToTelegram" disabled>KIRIM PESANAN</button>' +
-          '<button type="button" class="btn pay-back btn-block" id="backToCheckout">KEMBALI / UBAH PESANAN</button>' +
+          '<button class="btn btn-block btn-primary" id="sendOrderBtn" disabled style="min-height:50px">KIRIM PESANAN</button>' +
+          '<button class="btn btn-block pay-back" id="backToFormBtn">← Kembali ke Form</button>' +
         '</div>' +
+
         '<div class="send-status" id="sendStatus"></div>' +
       '</div>';
 
-    $('#checkoutModal .modal-panel').scrollTop = 0;
+    $('#checkoutContent').innerHTML = html;
     bindPaymentEvents();
   }
 
   function bindPaymentEvents() {
-    const upBox   = $('#payUpload');
-    const upInput = $('#proofInput');
-    const sendBtn = $('#sendToTelegram');
-    const status  = $('#sendStatus');
+    const fileInput = $('#payFile');
+    const uploadBox = $('#payUpload');
+    const sendBtn   = $('#sendOrderBtn');
+    const statusEl  = $('#sendStatus');
+    let selectedFile = null;
 
-    $('#copyPayTotal').addEventListener('click', copyPaymentTotal);
-    $('#backToCheckout').addEventListener('click', backToCheckoutForm);
-
-    upBox.addEventListener('click', function (e) {
-      if (e.target.closest('#puRemove')) return;
-      upInput.click();
-    });
-
-    upInput.addEventListener('change', function () {
-      const f = upInput.files && upInput.files[0];
+    fileInput.addEventListener('change', function () {
+      const f = fileInput.files[0];
       if (!f) return;
-      if (!/^image\//i.test(f.type)) { toast('File harus berupa gambar'); upInput.value = ''; return; }
-      if (f.size > 10 * 1024 * 1024) { toast('Ukuran foto maksimal 10 MB'); upInput.value = ''; return; }
-
-      proofFile = f;
-      $('#puImg').src = URL.createObjectURL(f);
-      $('#puName').textContent = f.name + ' · ' + (f.size / 1048576).toFixed(2) + ' MB';
-      upBox.classList.add('has-file');
-      sendBtn.disabled = false;
-      status.className = 'send-status';
-      status.textContent = '';
+      if (f.size > 5 * 1024 * 1024) {
+        toast('Ukuran gambar maksimal 5 MB');
+        fileInput.value = '';
+        return;
+      }
+      selectedFile = f;
+      const reader = new FileReader();
+      reader.onload = function (ev) {
+        $('#puImg').src = ev.target.result;
+        $('#puName').textContent = f.name + ' · ' + (f.size / 1024).toFixed(0) + ' KB';
+        uploadBox.classList.add('has-file');
+        sendBtn.disabled = false;
+      };
+      reader.readAsDataURL(f);
     });
 
     $('#puRemove').addEventListener('click', function (e) {
       e.preventDefault();
       e.stopPropagation();
-      proofFile = null;
-      upInput.value = '';
-      upBox.classList.remove('has-file');
+      selectedFile = null;
+      fileInput.value = '';
+      uploadBox.classList.remove('has-file');
       sendBtn.disabled = true;
-      status.className = 'send-status';
-      status.textContent = '';
     });
 
-    sendBtn.addEventListener('click', function () {
-      if (!proofFile) { toast('Upload bukti pembayaran terlebih dahulu'); return; }
-      if (!pendingOrder) { toast('Data pesanan tidak ditemukan, silakan ulangi'); return; }
+    $('#backToFormBtn').addEventListener('click', function () {
+      renderCheckout();
+    });
 
+    sendBtn.addEventListener('click', async function () {
+      if (!selectedFile) return;
       sendBtn.disabled = true;
-      sendBtn.innerHTML = '<span class="spinner"></span>MENGIRIM…';
-      status.className = 'send-status show';
-      status.textContent = 'Mengirim laporan pesanan & foto bukti pembayaran ke Telegram Owner…';
+      sendBtn.innerHTML = '<span class="spinner"></span> Mengirim...';
+      statusEl.classList.remove('show');
 
-      sendOrderToTelegram(proofFile).then(function () {
-        cart = [];
-        saveCart();
-        updateBadge();
-        renderCart();
-        pendingOrder = null;
-        proofFile = null;
-        renderSuccessScreen();
-      }).catch(function (err) {
-        status.className = 'send-status show err';
-        status.textContent = 'Gagal mengirim: ' + ((err && err.message) ? err.message : 'kesalahan jaringan') + '. Periksa koneksi lalu coba lagi.';
+      try {
+        const saved = await sendOrderToSupabase(pendingOrder, selectedFile);
+        renderSuccessScreen(saved.ref_code);
+      } catch (err) {
+        console.error(err);
+        statusEl.textContent = '❌ ' + err.message;
+        statusEl.className = 'send-status show err';
         sendBtn.disabled = false;
-        sendBtn.textContent = 'KIRIM ULANG PESANAN';
-      });
+        sendBtn.textContent = 'KIRIM PESANAN';
+      }
     });
   }
 
-  function truncateText(s, max) {
-    if (s.length <= max) return s;
-    let out = s.slice(0, max - 1);
-    const last = out.charCodeAt(out.length - 1);
-    if (last >= 0xD800 && last <= 0xDBFF) out = out.slice(0, -1);
-    return out + '…';
+  async function sendOrderToSupabase(order, file) {
+    const ext = (file.name.split('.').pop() || 'jpg').toLowerCase();
+    const fileName = Date.now() + '-' + Math.random().toString(36).slice(2) + '.' + ext;
+    const filePath = 'orders/' + fileName;
+
+    const { error: uploadErr } = await sb.storage
+      .from('bukti-bayar')
+      .upload(filePath, file, { cacheControl: '3600', upsert: false });
+
+    if (uploadErr) throw new Error('Upload bukti gagal: ' + uploadErr.message);
+
+    const refCode = 'RKY-' + Date.now().toString(36).toUpperCase();
+
+    const { data, error } = await sb.from('orders').insert({
+      ref_code: refCode,
+      nama: order.nama,
+      wa: order.wa,
+      items: order.items,
+      total: order.total,
+      catatan: order.catatan,
+      status: 'PENDING',
+      bukti_path: filePath
+    }).select().single();
+
+    if (error) throw new Error('Simpan order gagal: ' + error.message);
+    return data;
   }
 
-  function buildCaption(o) {
-    let c = '🧾 BUKTI PEMBAYARAN — RIKY STORE\n\n';
-    c += 'Nama: ' + o.name + '\n';
-    c += 'Nomor WhatsApp: ' + o.phone + '\n';
-    c += 'Total: ' + rupiah(o.total) + '\n\n';
-    c += 'Produk:\n';
-    o.details.forEach(function (d) {
-      c += '• ' + d.item.name + ' ×' + d.item.qty + ' — ' + rupiah(d.item.price * d.item.qty) + '\n';
-    });
-    c += '\nDikirim otomatis dari website RIKY STORE.';
-    return truncateText(c, 1024);
-  }
-
-  function tgApi(method, formData) {
-    return fetch(TG_API + method, { method: 'POST', body: formData })
-      .then(function (res) { return res.json(); })
-      .then(function (json) {
-        if (!json || !json.ok) {
-          throw new Error((json && json.description) ? json.description : 'Telegram menolak permintaan');
-        }
-        return json.result;
-      });
-  }
-
-  function sendOrderToTelegram(file) {
-    const data = pendingOrder.data;
-
-    /* 1) Kirim FOTO bukti pembayaran + ringkasan sebagai caption */
-    const fdPhoto = new FormData();
-    fdPhoto.append('chat_id', TG_CHAT_ID);
-    fdPhoto.append('caption', buildCaption(data));
-    fdPhoto.append('photo', file, file.name || 'bukti-pembayaran.jpg');
-
-    return tgApi('sendPhoto', fdPhoto).then(function () {
-      /* 2) Kirim LAPORAN PESANAN lengkap */
-      const fdText = new FormData();
-      fdText.append('chat_id', TG_CHAT_ID);
-      fdText.append('text', truncateText(pendingOrder.message, 4096));
-      fdText.append('disable_web_page_preview', 'true');
-      return tgApi('sendMessage', fdText);
-    });
-  }
-
-  function renderSuccessScreen() {
+  function renderSuccessScreen(refCode) {
     $('#checkoutContent').innerHTML =
       '<div class="success-screen">' +
         '<div class="success-badge">✓</div>' +
         '<h3>Pesanan Berhasil Dikirim!</h3>' +
-        '<p>Laporan pesanan dan foto bukti pembayaran Anda sudah otomatis terkirim ke Telegram Owner.</p>' +
+        '<p>Terima kasih, <b>' + esc(pendingOrder.nama) + '</b>.<br>Pesanan kamu masuk ke sistem Riky Store dan menunggu verifikasi owner.</p>' +
         '<div class="success-ref">' +
-          'Owner akan memeriksa bukti transfer dan mengonfirmasi pesanan Anda.<br>' +
-          'Simpan bukti pembayaran sampai pesanan <b>dikonfirmasi</b>.' +
+          'Ref: <b>' + esc(refCode) + '</b><br>' +
+          'Total: <b>' + rupiah(pendingOrder.total) + '</b><br>' +
+          'Owner akan menghubungi via WhatsApp <b>' + esc(pendingOrder.wa) + '</b>.' +
         '</div>' +
-        '<button type="button" class="btn btn-primary btn-block" id="successClose">SELESAI</button>' +
+        '<button class="btn btn-primary btn-block" id="successCloseBtn">SELESAI</button>' +
       '</div>';
-    $('#checkoutModal .modal-panel').scrollTop = 0;
-    $('#successClose').addEventListener('click', closeModals);
-  }
 
-  function copyPaymentTotal() {
-    if (!pendingOrder) return;
-    const value = String(pendingOrder.data.total);
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(value).then(function () {
-        toast('Nominal berhasil disalin');
-      }).catch(function () { toast('Nominal: ' + rupiah(value)); });
-    } else {
-      const helper = document.createElement('textarea');
-      helper.value = value;
-      helper.style.position = 'fixed';
-      helper.style.opacity = '0';
-      document.body.appendChild(helper);
-      helper.select();
-      try { document.execCommand('copy'); toast('Nominal berhasil disalin'); }
-      catch (e) { toast('Nominal: ' + rupiah(value)); }
-      helper.remove();
-    }
-  }
-
-  function backToCheckoutForm() {
-    if (!pendingOrder) return;
-    if (paymentTimer) clearTimeout(paymentTimer);
-    const data = pendingOrder.data;
-    renderCheckout();
-    $('#coName').value = data.name;
-    $('#coPhone').value = data.phone;
-    $('#coNote').value = data.note || '';
-    data.details.forEach(function (detail, i) {
-      const field = detail.item.type === 'group'
-        ? document.getElementById('grp-' + i)
-        : document.getElementById('usr-' + i);
-      if (field) field.value = detail.item.type === 'group' ? detail.group : detail.user;
+    $('#successCloseBtn').addEventListener('click', function () {
+      closeModals();
+      cart = [];
+      saveCart(); updateBadge(); renderCart();
+      pendingOrder = null;
+      currentItems = [];
     });
-    pendingOrder = null;
-    proofFile = null;
-    $('#checkoutModal .modal-panel').scrollTop = 0;
   }
-
-  function buildMessage(o) {
-    const L = '━━━━━━━━━━━━━━━━━━';
-    let m = '';
-    m += L + '\n';
-    m += '🛍️ PESANAN RIKY STORE\n';
-    m += L + '\n\n';
-    m += '👤 DATA PEMBELI\n\n';
-    m += 'Nama: ' + o.name + '\n';
-    m += 'Nomor WhatsApp: ' + o.phone + '\n\n';
-    m += '📦 DETAIL PESANAN\n';
-    o.details.forEach(function (d) {
-      const it = d.item;
-      m += '\nProduk: ' + it.name + '\n';
-      m += 'Kategori: ' + it.category + '\n';
-      m += 'Durasi: ' + it.dur + ' (' + it.days + ' Hari)\n';
-      m += 'Harga: ' + rupiah(it.price) + '\n';
-      m += 'Jumlah: ' + it.qty + '\n';
-      if (d.group) { m += '\n🔗 LINK GRUP:\n' + d.group + '\n'; }
-      if (d.user)  { m += '\n📱 NOMOR USER PREMIUM:\n' + d.user + '\n'; }
-    });
-    if (o.note) { m += '\n📝 CATATAN UNTUK OWNER:\n' + o.note + '\n'; }
-    m += '\n💰 TOTAL PEMBAYARAN:\n' + rupiah(o.total) + '\n\n';
-    m += '💳 STATUS PEMBAYARAN:\n';
-    m += 'Metode: QRIS\n';
-    m += 'Bukti transfer: TERLAMPIR (foto dikirim pada chat ini)\n\n';
-    m += L + '\n';
-    m += 'Pesanan dikirim otomatis dari website RIKY STORE.\n';
-    m += 'Mohon owner memeriksa foto bukti pembayaran di atas\n';
-    m += 'dan mengonfirmasi pesanan ini.\n\n';
-    m += 'Terima kasih telah berbelanja! ❤️\n';
-    m += L;
-    return m;
-  }
-
-  document.addEventListener('click', function (e) {
-    const addBtn = e.target.closest('[data-add]');
-    if (addBtn) { addToCart(addBtn.dataset.add, 1); return; }
-    const buyBtn = e.target.closest('[data-buy]');
-    if (buyBtn) {
-      const p = ALL[buyBtn.dataset.buy];
-      if (!p) return;
-      openCheckout([{
-        id: p.id, name: p.name, dur: p.dur, days: p.days, price: p.price,
-        type: p.type, category: p.category, categoryLabel: p.categoryLabel, qty: 1
-      }]);
-    }
-  });
-
-  const tstTrack = $('#tstTrack');
-  const tstDots  = $('#tstDots');
-
-  tstTrack.innerHTML = TESTIMONIALS.map(function (t) {
-    return '' +
-      '<div class="tst-slide">' +
-        '<div class="tst-card">' +
-          '<div class="tst-ava">' + esc(t.initials) + '</div>' +
-          '<div class="tst-stars">★★★★★</div>' +
-          '<p class="tst-text">"' + esc(t.text) + '"</p>' +
-          '<div class="tst-name">' + esc(t.name) + '</div>' +
-          '<div class="tst-role">' + esc(t.role) + '</div>' +
-        '</div>' +
-      '</div>';
-  }).join('');
-
-  TESTIMONIALS.forEach(function (_, i) {
-    const b = document.createElement('button');
-    b.setAttribute('aria-label', 'Testimoni ' + (i + 1));
-    b.addEventListener('click', function () { tstCarousel.set(i); tstCarousel.resetAuto(); });
-    tstDots.appendChild(b);
-  });
-
-  const tstCarousel = createCarousel({
-    track: tstTrack,
-    viewport: $('#tstWrap'),
-    count: function () { return TESTIMONIALS.length; },
-    loop: false,
-    onChange: function (i) {
-      $$('#tstDots button').forEach(function (b, k) { b.classList.toggle('active', k === i); });
-    }
-  });
-  tstCarousel.startAuto(5200);
-
-  const faqList = $('#faqList');
-
-  faqList.innerHTML = FAQS.map(function (f, i) {
-    return '' +
-      '<div class="faq-item" data-faq="' + i + '">' +
-        '<button class="faq-q" type="button" aria-expanded="false">' +
-          '<span>' + esc(f.q) + '</span>' +
-          '<span class="faq-icon">+</span>' +
-        '</button>' +
-        '<div class="faq-a"><p>' + esc(f.a) + '</p></div>' +
-      '</div>';
-  }).join('');
-
-  faqList.addEventListener('click', function (e) {
-    const q = e.target.closest('.faq-q');
-    if (!q) return;
-    const item = q.parentElement;
-    const answer = item.querySelector('.faq-a');
-    const isOpen = item.classList.contains('open');
-    $$('.faq-item', faqList).forEach(function (el) {
-      el.classList.remove('open');
-      el.querySelector('.faq-a').style.maxHeight = '0px';
-      el.querySelector('.faq-q').setAttribute('aria-expanded', 'false');
-    });
-    if (!isOpen) {
-      item.classList.add('open');
-      answer.style.maxHeight = answer.scrollHeight + 'px';
-      q.setAttribute('aria-expanded', 'true');
-    }
-  });
-
-  window.addEventListener('resize', function () {
-    $$('.faq-item.open .faq-a', faqList).forEach(function (a) {
-      a.style.maxHeight = a.scrollHeight + 'px';
-    });
-  });
-
-  if ('IntersectionObserver' in window) {
-    const io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) {
-          en.target.classList.add('in');
-          io.unobserve(en.target);
-        }
-      });
-    }, { threshold: 0.1 });
-    $$('.reveal').forEach(function (el) { io.observe(el); });
-  } else {
-    $$('.reveal').forEach(function (el) { el.classList.add('in'); });
-  }
-
-  function init() {
-    loadCart();
-    updateBadge();
-    renderCart();
-    $('#year').textContent = new Date().getFullYear();
-    setTimeout(updateHeroHeight, 60);
-  }
-  init();
-
-  window.addEventListener('load', function () {
-    setTimeout(function () { $('#preloader').classList.add('hide'); }, 350);
-    setTimeout(updateHeroHeight, 100);
-  });
-  setTimeout(function () { $('#preloader').classList.add('hide'); }, 2600);
 
 })();
 </script>
 </body>
-</html>*
+</html>
+ 
