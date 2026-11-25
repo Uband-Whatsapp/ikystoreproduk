@@ -2016,24 +2016,74 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
       currentItems = [];
     });
   }
+  /* ====== MUNCULKAN KATALOG & ANIMASI REVEAL ====== */
+  const revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in');
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => io.observe(el));
+  } else {
+    // Fallback kalau browser jadul
+    revealEls.forEach(el => el.classList.add('in'));
+  }
+
+  /* ====== LOAD KERANJANG SAAT HALAMAN DIBUKA ====== */
+  loadCart();
+  updateBadge();
+  renderCart();
+
+  /* ====== UPDATE TAHUN COPYRIGHT ====== */
+  const yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
 
 })();
 </script>
 <script>
-/* ====== AUTO-HIDE PRELOADER ====== */
+/* ====== AUTO-HIDE PRELOADER — BULLETPROOF ====== */
 (function () {
-  function hide() {
+  console.log('[PRELOADER] Script berjalan ✔');
+
+  function hidePreloader(tag) {
     var p = document.getElementById('preloader');
-    if (p) p.classList.add('hide');
+    if (!p) {
+      console.error('[PRELOADER] Element #preloader TIDAK DITEMUKAN!');
+      return;
+    }
+    console.log('[PRELOADER] hide() dipanggil via:', tag);
+    // Inline style — paling gak bisa diganggu-gugat
+    p.style.opacity       = '0';
+    p.style.visibility    = 'hidden';
+    p.style.pointerEvents = 'none';
+    p.style.transition    = 'opacity .3s ease, visibility .3s ease';
+    // Hapus dari layout setelah transisi
+    setTimeout(function () { p.style.display = 'none'; }, 400);
   }
-  // Kalau halaman sudah loaded
-  if (document.readyState === 'complete') {
-    setTimeout(hide, 300);
+
+  // Trigger 1: DOM ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(function () { hidePreloader('DOMContentLoaded'); }, 200);
+    });
   } else {
-    window.addEventListener('load', function () { setTimeout(hide, 300); });
+    setTimeout(function () { hidePreloader('readyState=' + document.readyState); }, 200);
   }
-  // Fallback: maksimal 2 detik, apapun yang terjadi
-  setTimeout(hide, 2000);
+
+  // Trigger 2: window load
+  window.addEventListener('load', function () {
+    setTimeout(function () { hidePreloader('window.load'); }, 100);
+  });
+
+  // Trigger 3: paksa dalam 1.5 detik apapun yang terjadi
+  setTimeout(function () { hidePreloader('force-1.5s'); }, 1500);
+
+  // Trigger 4: paksa lagi di 3 detik (double check)
+  setTimeout(function () { hidePreloader('force-3s'); }, 3000);
 })();
 </script>
 </body>
