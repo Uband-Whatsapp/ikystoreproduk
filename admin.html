@@ -96,6 +96,12 @@
     color:var(--text);font:700 12.5px var(--font);box-shadow:0 12px 30px rgba(0,0,0,.5);
     opacity:0;visibility:hidden;transition:.3s;z-index:300}
   .toast.show{opacity:1;visibility:visible;transform:translate(-50%,0)}
+  
+  /* CSS Modal Gambar */
+  .img-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 9999; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+  .img-modal.show { display: flex; }
+  .img-modal img { max-width: 95%; max-height: 90vh; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+  .img-modal .close-img { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.2); color: #fff; border: none; font-size: 20px; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-weight: bold; }
 </style>
 </head>
 <body>
@@ -134,6 +140,12 @@
     </div>
   </div>
 </main>
+
+<!-- Modal untuk Lihat Bukti -->
+<div class="img-modal" id="buktiModal">
+  <button class="close-img" id="closeBuktiBtn">✕</button>
+  <img id="buktiImg" src="" alt="Bukti Pembayaran">
+</div>
 
 <div class="toast" id="toast"></div>
 
@@ -274,7 +286,7 @@
     const waLink = 'https://wa.me/' + String(o.wa||'').replace(/^0/,'62');
     const created = o.created_at ? new Date(o.created_at).toLocaleString('id-ID') : '-';
     
-    // Logika tombol bukti (Mendukung Base64 & URL lama)
+    // Logika tombol bukti
     const buktiBtn = o.bukti_path
       ? '<button class="btn btn-bukti" data-bukti="' + encodeURIComponent(o.bukti_path) + '">📷 Lihat Bukti</button>'
       : '<span class="btn" style="opacity:.5">📷 Tanpa Bukti</span>';
@@ -303,26 +315,40 @@
     '</div>';
   }
 
-  // Event Handler untuk Tombol Lihat Bukti (Buka Base64 di Tab Baru)
+  // Event Handler untuk Tombol Lihat Bukti (Munculin Modal)
   document.addEventListener('click', async function(e){
     const buktiBtn = e.target.closest('[data-bukti]');
     if (!buktiBtn) return;
     
     const path = decodeURIComponent(buktiBtn.dataset.bukti);
     
-    // Jika datanya berupa Base64 dari database baru
+    // Jika datanya berupa Base64 (disimpan di database)
     if (path.startsWith('data:image')) {
-      const win = window.open();
-      win.document.write('<title>Bukti Pembayaran</title><body style="margin:0;background:#111;display:grid;place-items:center;min-height:100vh;"><img src="' + path + '" style="max-width:100%;max-height:100vh;box-shadow:0 0 20px rgba(0,0,0,0.5);"></body>');
+      document.getElementById('buktiImg').src = path;
+      document.getElementById('buktiModal').classList.add('show');
       return;
     }
     
-    // Fallback untuk data lama (jika masih pakai Supabase Storage)
+    // Fallback untuk data lama (jika ada yang masih pakai Storage)
     const { data, error } = await sb.storage
       .from('bukti-bayar')
       .createSignedUrl(path, 3600);
     if (error) { toast('Gagal buka bukti: ' + error.message); return; }
     window.open(data.signedUrl, '_blank');
+  });
+
+  // Tombol Close Modal
+  document.getElementById('closeBuktiBtn').addEventListener('click', function() {
+    document.getElementById('buktiModal').classList.remove('show');
+    document.getElementById('buktiImg').src = '';
+  });
+
+  // Klik di luar gambar juga nutup modal
+  document.getElementById('buktiModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+      this.classList.remove('show');
+      document.getElementById('buktiImg').src = '';
+    }
   });
 
   document.addEventListener('change', async function(e){
