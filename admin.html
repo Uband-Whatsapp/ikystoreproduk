@@ -142,8 +142,9 @@
   'use strict';
 
   const SUPABASE_URL      = 'https://pvtlcztbuljzogtuyoeo.supabase.co';
-const SUPABASE_ANON_KEY = 'sb_publishable_wqNuj51I4--ee_Q3L71i-A_6pE1EcEA';
-const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const SUPABASE_ANON_KEY = 'sb_publishable_wqNuj51I4--ee_Q3L71i-A_6pE1EcEA';
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
   const $ = s => document.querySelector(s);
   let orders = [];
   let currentFilter = 'ALL';
@@ -272,8 +273,10 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
   function orderCard(o){
     const waLink = 'https://wa.me/' + String(o.wa||'').replace(/^0/,'62');
     const created = o.created_at ? new Date(o.created_at).toLocaleString('id-ID') : '-';
+    
+    // Logika tombol bukti (Mendukung Base64 & URL lama)
     const buktiBtn = o.bukti_path
-      ? '<button class="btn btn-bukti" data-bukti="' + esc(o.bukti_path) + '">📷 Lihat Bukti</button>'
+      ? '<button class="btn btn-bukti" data-bukti="' + encodeURIComponent(o.bukti_path) + '">📷 Lihat Bukti</button>'
       : '<span class="btn" style="opacity:.5">📷 Tanpa Bukti</span>';
 
     return '<div class="order-card">' +
@@ -300,10 +303,21 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     '</div>';
   }
 
+  // Event Handler untuk Tombol Lihat Bukti (Buka Base64 di Tab Baru)
   document.addEventListener('click', async function(e){
     const buktiBtn = e.target.closest('[data-bukti]');
     if (!buktiBtn) return;
-    const path = buktiBtn.dataset.bukti;
+    
+    const path = decodeURIComponent(buktiBtn.dataset.bukti);
+    
+    // Jika datanya berupa Base64 dari database baru
+    if (path.startsWith('data:image')) {
+      const win = window.open();
+      win.document.write('<title>Bukti Pembayaran</title><body style="margin:0;background:#111;display:grid;place-items:center;min-height:100vh;"><img src="' + path + '" style="max-width:100%;max-height:100vh;box-shadow:0 0 20px rgba(0,0,0,0.5);"></body>');
+      return;
+    }
+    
+    // Fallback untuk data lama (jika masih pakai Supabase Storage)
     const { data, error } = await sb.storage
       .from('bukti-bayar')
       .createSignedUrl(path, 3600);
