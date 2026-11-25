@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin — Riky Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root{
+    --bg:#04060d;--glass:rgba(255,255,255,.05);
+    --line:rgba(120,160,255,.18);--text:#e9f1ff;--dim:#93a3c0;
+    --blue:#2f8bff;--blue-l:#6bb6ff;--danger:#ff5470;
+    --font:'Plus Jakarta Sans',system-ui,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;padding:16px}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+    background:radial-gradient(700px 500px at 90% -10%,rgba(47,139,255,.16),transparent 60%)}
+  header,main{position:relative;z-index:1;max-width:1200px;margin:0 auto}
+  header{display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px 0 20px}
+  .logo{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;
+    background:linear-gradient(145deg,#2f8bff,#0a54c4);font-weight:800;color:#fff;
+    box-shadow:0 0 22px rgba(47,139,255,.5)}
+  h1{font-size:18px;font-weight:800;letter-spacing:.04em}
+  h1 span{color:var(--blue-l)}
+  .spacer{flex:1}
+  .btn{padding:10px 16px;border-radius:11px;border:1px solid var(--line);
+    background:var(--glass);color:var(--text);font:700 12.5px var(--font);
+    cursor:pointer;transition:.2s;display:inline-flex;align-items:center;gap:6px}
+  .btn:hover{border-color:rgba(47,139,255,.55);box-shadow:0 0 18px rgba(47,139,255,.3)}
+  .btn-primary{background:linear-gradient(135deg,#2f8bff,#0a54c4);color:#fff;border:0}
+  .btn-danger{color:#ff8fa3;border-color:rgba(255,84,112,.4)}
+  .btn-danger:hover{background:rgba(255,84,112,.12);border-color:var(--danger)}
+  .login-box{max-width:400px;margin:80px auto;padding:34px 26px;
+    background:var(--glass);border:1px solid var(--line);border-radius:20px;text-align:center;
+    box-shadow:0 20px 50px rgba(0,0,0,.4)}
+  .login-box h2{font-size:18px;margin-bottom:8px}
+  .login-box p{font-size:12.5px;color:var(--dim);margin-bottom:20px}
+  .login-box input{width:100%;padding:12px 14px;border-radius:11px;border:1px solid var(--line);
+    background:rgba(255,255,255,.04);color:var(--text);font:500 14px var(--font);outline:none;margin-bottom:12px}
+  .login-box input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(47,139,255,.15)}
+  .login-err{color:#ff8fa3;font-size:12px;margin-top:10px;font-weight:600;min-height:18px}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:20px}
+  .stat{background:var(--glass);border:1px solid var(--line);border-radius:14px;padding:14px 16px}
+  .stat b{display:block;font-size:22px;font-weight:800;color:var(--blue-l);margin-bottom:2px}
+  .stat span{font-size:11px;color:var(--dim);letter-spacing:.06em;text-transform:uppercase}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+  .toolbar input{flex:1;min-width:180px;padding:11px 13px;border-radius:11px;
+    border:1px solid var(--line);background:var(--glass);color:var(--text);
+    font:500 13px var(--font);outline:none}
+  .toolbar input:focus{border-color:var(--blue)}
+  .chip{padding:8px 14px;border-radius:99px;border:1px solid var(--line);
+    background:var(--glass);color:var(--dim);font:700 11.5px var(--font);cursor:pointer;transition:.2s}
+  .chip.active{background:linear-gradient(135deg,#2f8bff,#0a54c4);color:#fff;border-color:transparent}
+  .order-card{background:var(--glass);border:1px solid var(--line);border-radius:16px;
+    padding:16px;margin-bottom:12px;transition:.25s}
+  .order-card:hover{border-color:rgba(47,139,255,.45);box-shadow:0 0 28px rgba(47,139,255,.15)}
+  .oc-head{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+  .oc-id{font-size:12px;color:var(--dim);font-family:monospace}
+  .oc-id b{color:var(--blue-l)}
+  .badge{display:inline-block;padding:4px 10px;border-radius:99px;font-size:10.5px;
+    font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+  .badge.PENDING{background:rgba(255,201,60,.15);color:#ffc93c;border:1px solid rgba(255,201,60,.35)}
+  .badge.PAID{background:rgba(55,174,226,.15);color:#6bb6ff;border:1px solid rgba(55,174,226,.35)}
+  .badge.PROSES{background:rgba(47,139,255,.15);color:#6bb6ff;border:1px solid rgba(47,139,255,.35)}
+  .badge.SELESAI{background:rgba(37,211,102,.15);color:#25d366;border:1px solid rgba(37,211,102,.35)}
+  .badge.BATAL{background:rgba(255,84,112,.15);color:#ff8fa3;border:1px solid rgba(255,84,112,.35)}
+  .oc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:12px}
+  .oc-field label{display:block;font-size:10px;color:var(--dim);letter-spacing:.1em;
+    text-transform:uppercase;font-weight:700;margin-bottom:4px}
+  .oc-field div{font-size:13px;font-weight:600;word-break:break-word}
+  .oc-field a{color:var(--blue-l);text-decoration:none}
+  .oc-field a:hover{text-decoration:underline}
+  .oc-items{background:rgba(47,139,255,.06);border:1px solid rgba(47,139,255,.2);
+    border-radius:11px;padding:11px 13px;margin-bottom:12px;font-size:12.5px;line-height:1.65}
+  .oc-item-row{display:flex;justify-content:space-between;gap:8px;padding:3px 0;border-bottom:1px dashed rgba(120,160,255,.12)}
+  .oc-item-row:last-child{border-bottom:0}
+  .oc-note{font-size:12px;color:var(--dim);font-style:italic;margin-bottom:12px;
+    padding:10px 12px;border-left:3px solid var(--blue);background:rgba(47,139,255,.04);border-radius:0 8px 8px 0}
+  .oc-actions{display:flex;gap:8px;flex-wrap:wrap}
+  .oc-actions select{padding:8px 12px;border-radius:9px;border:1px solid var(--line);
+    background:rgba(255,255,255,.05);color:var(--text);font:600 12px var(--font);cursor:pointer}
+  .oc-actions .btn{padding:8px 12px;font-size:11.5px}
+  .oc-actions .btn-wa{background:linear-gradient(135deg,#25d366,#0e9148);color:#fff;border:0}
+  .oc-actions .btn-bukti{background:rgba(55,174,226,.15);color:#6bb6ff;border-color:rgba(55,174,226,.4)}
+  .empty{text-align:center;padding:60px 20px;color:var(--dim)}
+  .empty .big{font-size:44px;display:block;margin-bottom:12px;opacity:.5}
+  .loading{text-align:center;padding:50px;color:var(--dim)}
+  .spinner{display:inline-block;width:28px;height:28px;border-radius:50%;
+    border:3px solid rgba(47,139,255,.2);border-top-color:var(--blue);
+    animation:spin .8s linear infinite;margin-bottom:12px}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,20px);
+    padding:12px 18px;border-radius:12px;background:#0a1020;border:1px solid rgba(47,139,255,.45);
+    color:var(--text);font:700 12.5px var(--font);box-shadow:0 12px 30px rgba(0,0,0,.5);
+    opacity:0;visibility:hidden;transition:.3s;z-index:300}
+  .toast.show{opacity:1;visibility:visible;transform:translate(-50%,0)}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">R</div>
+  <h1>RIKY <span>STORE</span> — Admin</h1>
+  <div class="spacer"></div>
+  <button class="btn" id="refreshBtn">↻ Refresh</button>
+  <button class="btn btn-danger" id="logoutBtn" style="display:none">Logout</button>
+</header>
+
+<main>
+  <div class="login-box" id="loginBox">
+    <h2>🔒 Login Admin</h2>
+    <p>Masuk pakai email & password admin Supabase</p>
+    <input type="email" id="emailInput" placeholder="admin@email.com" autocomplete="username">
+    <input type="password" id="passInput" placeholder="Password" autocomplete="current-password">
+    <button class="btn btn-primary" id="loginBtn" style="width:100%">MASUK</button>
+    <div class="login-err" id="loginErr"></div>
+  </div>
+
+  <div id="dashboard" style="display:none">
+    <div class="stats" id="stats"></div>
+    <div class="toolbar">
+      <input type="search" id="searchInput" placeholder="Cari nama, nomor, atau ref…">
+      <button class="chip active" data-filter="ALL">Semua</button>
+      <button class="chip" data-filter="PENDING">Pending</button>
+      <button class="chip" data-filter="PAID">Paid</button>
+      <button class="chip" data-filter="PROSES">Proses</button>
+      <button class="chip" data-filter="SELESAI">Selesai</button>
+      <button class="chip" data-filter="BATAL">Batal</button>
+    </div>
+    <div id="orderList">
+      <div class="loading"><div class="spinner"></div><br>Memuat data pesanan…</div>
+    </div>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(function(){
+  'use strict';
+
+  const SUPABASE_URL      = 'https://GANTI-DENGAN-PROJECT-URL-LU.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_wqNuj51I4--ee_Q3L71i-A_6pE1EcEA';
+  const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  const $ = s => document.querySelector(s);
+  let orders = [];
+  let currentFilter = 'ALL';
+  let searchQuery = '';
+
+  function rupiah(n){ return 'Rp' + Number(n||0).toLocaleString('id-ID'); }
+  function esc(s){
+    return String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  let toastTimer;
+  function toast(msg){
+    const t = $('#toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2600);
+  }
+
+  async function checkSession(){
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) showDashboard();
+  }
+
+  $('#loginBtn').addEventListener('click', async function(){
+    const email = $('#emailInput').value.trim();
+    const password = $('#passInput').value;
+    if (!email || !password) {
+      $('#loginErr').textContent = 'Email dan password wajib diisi.';
+      return;
+    }
+    $('#loginErr').textContent = '';
+    this.disabled = true;
+    this.textContent = 'MEMPROSES...';
+
+    const { error } = await sb.auth.signInWithPassword({ email, password });
+    this.disabled = false;
+    this.textContent = 'MASUK';
+
+    if (error) {
+      $('#loginErr').textContent = 'Login gagal: ' + error.message;
+      return;
+    }
+    showDashboard();
+  });
+
+  $('#passInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') $('#loginBtn').click();
+  });
+
+  function showDashboard(){
+    $('#loginBox').style.display = 'none';
+    $('#dashboard').style.display = 'block';
+    $('#logoutBtn').style.display = 'inline-flex';
+    loadOrders();
+  }
+
+  $('#logoutBtn').addEventListener('click', async function(){
+    await sb.auth.signOut();
+    location.reload();
+  });
+
+  async function loadOrders(){
+    const list = $('#orderList');
+    list.innerHTML = '<div class="loading"><div class="spinner"></div><br>Memuat data pesanan…</div>';
+
+    const { data, error } = await sb
+      .from('orders')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      list.innerHTML = '<div class="empty"><span class="big">⚠️</span>Gagal memuat: ' + esc(error.message) + '</div>';
+      return;
+    }
+    orders = data || [];
+    renderStats();
+    renderOrders();
+  }
+
+  function renderStats(){
+    const total = orders.length;
+    const pending = orders.filter(o => o.status === 'PENDING').length;
+    const selesai = orders.filter(o => o.status === 'SELESAI').length;
+    const revenue = orders.filter(o => o.status === 'SELESAI')
+      .reduce((a, b) => a + (Number(b.total) || 0), 0);
+
+    $('#stats').innerHTML =
+      '<div class="stat"><b>' + total + '</b><span>Total Order</span></div>' +
+      '<div class="stat"><b>' + pending + '</b><span>Pending</span></div>' +
+      '<div class="stat"><b>' + selesai + '</b><span>Selesai</span></div>' +
+      '<div class="stat"><b>' + rupiah(revenue) + '</b><span>Revenue</span></div>';
+  }
+
+  function renderOrders(){
+    let list = orders.slice();
+    if (currentFilter !== 'ALL') list = list.filter(o => o.status === currentFilter);
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      list = list.filter(o =>
+        String(o.nama||'').toLowerCase().includes(q) ||
+        String(o.wa||'').includes(q) ||
+        String(o.ref_code||'').toLowerCase().includes(q)
+      );
+    }
+
+    const container = $('#orderList');
+    if (!list.length) {
+      container.innerHTML = '<div class="empty"><span class="big">📭</span>Belum ada pesanan' +
+        (currentFilter !== 'ALL' ? ' dengan status <b>' + currentFilter + '</b>' : '') + '.</div>';
+      return;
+    }
+    container.innerHTML = list.map(orderCard).join('');
+  }
+
+  function itemsHTML(items){
+    if (!Array.isArray(items)) return esc(String(items || ''));
+    return items.map(it => {
+      return '<div class="oc-item-row">' +
+        '<span>' + esc(it.name) + ' ×' + it.qty + '</span>' +
+        '<span style="color:var(--blue-l);font-weight:700">' + rupiah(it.total) + '</span>' +
+      '</div>' +
+      (it.detail ? '<div style="font-size:11px;color:var(--dim);padding:2px 0 6px">↳ ' + esc(it.detail) + '</div>' : '');
+    }).join('');
+  }
+
+  function orderCard(o){
+    const waLink = 'https://wa.me/' + String(o.wa||'').replace(/^0/,'62');
+    const created = o.created_at ? new Date(o.created_at).toLocaleString('id-ID') : '-';
+    const buktiBtn = o.bukti_path
+      ? '<button class="btn btn-bukti" data-bukti="' + esc(o.bukti_path) + '">📷 Lihat Bukti</button>'
+      : '<span class="btn" style="opacity:.5">📷 Tanpa Bukti</span>';
+
+    return '<div class="order-card">' +
+      '<div class="oc-head">' +
+        '<div class="oc-id">Ref: <b>' + esc(o.ref_code) + '</b> · ' + esc(created) + '</div>' +
+        '<span class="badge ' + esc(o.status) + '">' + esc(o.status) + '</span>' +
+      '</div>' +
+      '<div class="oc-grid">' +
+        '<div class="oc-field"><label>Nama</label><div>' + esc(o.nama) + '</div></div>' +
+        '<div class="oc-field"><label>WhatsApp</label><div><a href="' + waLink + '" target="_blank">' + esc(o.wa) + '</a></div></div>' +
+        '<div class="oc-field"><label>Total</label><div style="color:var(--blue-l);font-weight:800">' + rupiah(o.total) + '</div></div>' +
+      '</div>' +
+      '<div class="oc-items">' + itemsHTML(o.items) + '</div>' +
+      (o.catatan ? '<div class="oc-note">💬 ' + esc(o.catatan) + '</div>' : '') +
+      '<div class="oc-actions">' +
+        '<select data-id="' + esc(o.id) + '">' +
+          ['PENDING','PAID','PROSES','SELESAI','BATAL'].map(s =>
+            '<option value="' + s + '"' + (o.status === s ? ' selected' : '') + '>' + s + '</option>'
+          ).join('') +
+        '</select>' +
+        '<a class="btn btn-wa" href="' + waLink + '" target="_blank">💬 Chat WA</a>' +
+        buktiBtn +
+      '</div>' +
+    '</div>';
+  }
+
+  document.addEventListener('click', async function(e){
+    const buktiBtn = e.target.closest('[data-bukti]');
+    if (!buktiBtn) return;
+    const path = buktiBtn.dataset.bukti;
+    const { data, error } = await sb.storage
+      .from('bukti-bayar')
+      .createSignedUrl(path, 3600);
+    if (error) { toast('Gagal buka bukti: ' + error.message); return; }
+    window.open(data.signedUrl, '_blank');
+  });
+
+  document.addEventListener('change', async function(e){
+    const sel = e.target.closest('select[data-id]');
+    if (!sel) return;
+    const id = sel.dataset.id;
+    const status = sel.value;
+    sel.disabled = true;
+
+    const { error } = await sb.from('orders').update({ status }).eq('id', id);
+
+    if (error) {
+      toast('❌ ' + error.message);
+      sel.disabled = false;
+      return;
+    }
+    toast('Status → ' + status);
+    const found = orders.find(o => String(o.id) === String(id));
+    if (found) found.status = status;
+    renderStats();
+    renderOrders();
+  });
+
+  document.querySelectorAll('[data-filter]').forEach(btn => {
+    btn.addEventListener('click', function(){
+      document.querySelectorAll('[data-filter]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.dataset.filter;
+      renderOrders();
+    });
+  });
+
+  let searchTimer;
+  document.addEventListener('input', function(e){
+    if (e.target.id !== 'searchInput') return;
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(function(){
+      searchQuery = e.target.value.trim();
+      renderOrders();
+    }, 200);
+  });
+
+  $('#refreshBtn').addEventListener('click', loadOrders);
+
+  checkSession();
+})();
+</script>
+</body>
+</html>
