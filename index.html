@@ -2019,6 +2019,23 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 })();
 </script>
+<script>
+/* ====== AUTO-HIDE PRELOADER ====== */
+(function () {
+  function hide() {
+    var p = document.getElementById('preloader');
+    if (p) p.classList.add('hide');
+  }
+  // Kalau halaman sudah loaded
+  if (document.readyState === 'complete') {
+    setTimeout(hide, 300);
+  } else {
+    window.addEventListener('load', function () { setTimeout(hide, 300); });
+  }
+  // Fallback: maksimal 2 detik, apapun yang terjadi
+  setTimeout(hide, 2000);
+})();
+</script>
 </body>
 </html>
  
