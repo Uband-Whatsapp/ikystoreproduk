@@ -1635,7 +1635,34 @@ const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     closeModals();
     setTimeout(function () { openCheckout(items); }, 180);
   });
+/* ====== HANDLE KLIK TOMBOL PRODUK (+ KERANJANG & BELI SEKARANG) ====== */
+document.addEventListener('click', function (e) {
+  const addBtn = e.target.closest('[data-add]');
+  if (addBtn) {
+    addToCart(addBtn.dataset.add, 1);
+    return;
+  }
+  
+  const buyBtn = e.target.closest('[data-buy]');
+  if (buyBtn) {
+    const p = ALL[buyBtn.dataset.buy];
+    if (!p) return;
+    
+    // Siapkan 1 item untuk langsung dibeli (tanpa masuk keranjang)
+    const items = [{
+      id: p.id, name: p.name, dur: p.dur, days: p.days, price: p.price,
+      type: p.type, category: p.category, categoryLabel: p.categoryLabel, qty: 1
+    }];
+    
+    closeModals();
+    setTimeout(function () { openCheckout(items); }, 180);
+    return;
+  }
+});
 
+let currentItems = [];
+let pendingOrder = null;
+let paymentTimer = null;
   let currentItems = [];
   let pendingOrder = null;
   let paymentTimer = null;
